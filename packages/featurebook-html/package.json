@@ -32,12 +32,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "bash-color": "^0.0.4",
     "@jkroepke/featurebook-api": "^1.0.0-beta.0",
     "@jkroepke/featurebook-markdown": "^1.0.0-beta.0",
+    "bash-color": "^0.0.4",
     "fs-extra": "^8.1.0",
-    "pug": "^2.0.4",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "pug": "^2.0.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",

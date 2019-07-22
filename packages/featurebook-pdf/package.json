@@ -32,8 +32,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "bash-color": "^0.0.4",
     "@jkroepke/featurebook-api": "^1.0.0-beta.0",
+    "bash-color": "^0.0.4",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
     "pdfkit": "^0.10.0"
