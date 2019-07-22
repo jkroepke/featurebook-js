@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 var program = require('commander');
-var featurebook = require('featurebook-api');
-var featurebookServe = require('featurebook-serve');
-var featurebookPdf = require('featurebook-pdf');
-var featurebookHtml = require('featurebook-html');
+var featurebook = require('@jkroepke/featurebook-api');
+var featurebookServe = require('@jkroepke/featurebook-serve');
+var featurebookPdf = require('@jkroepke/featurebook-pdf');
+var featurebookHtml = require('@jkroepke/featurebook-html');
 var path = require('path');
 var color = require('bash-color');
 var opener = require('opener');

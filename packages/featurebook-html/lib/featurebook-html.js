@@ -5,8 +5,8 @@ var color = require('bash-color');
 var fs = require('fs-extra');
 var path = require('path');
 var pug = require('pug');
-var featurebook = require('featurebook-api');
-var markdown = require('featurebook-markdown');
+var featurebook = require('@jkroepke/featurebook-api');
+var markdown = require('@jkroepke/featurebook-markdown');
 
 var TEMPLATES_DIR = path.join(__dirname, './META-INF/html');
 var NO_SUMMARY_MESSAGE_MD = 'You can put some content here by creating the `SUMMARY.md` Markdown file.';

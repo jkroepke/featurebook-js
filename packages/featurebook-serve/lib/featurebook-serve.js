@@ -3,8 +3,8 @@
 var _ = require('lodash');
 var path = require('path');
 var express = require('express');
-var featurebook = require('featurebook-api');
-var markdown = require('featurebook-markdown');
+var featurebook = require('@jkroepke/featurebook-api');
+var markdown = require('@jkroepke/featurebook-markdown');
 
 var NOT_FOUND = 404;
 var INTERNAL_SERVER_ERROR = 500;
