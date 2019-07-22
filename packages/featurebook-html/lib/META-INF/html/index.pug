@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title #{metadata.title} #{metadata.version}
+    style
+      include stylesheet.css
+
+  body
+    div.featurebook-container
+      include _metadata.pug
+      include _spec-tree.pug
+
+      main.featurebook-main
+        div.featurebook-markdown !{summary}

@@ -1,0 +1,59 @@
+{
+  "name": "@jkroepke/featurebook-serve",
+  "version": "1.0.0",
+  "description": "FeatureBook's HTTP server",
+  "main": "index.js",
+  "files": [
+    "lib",
+    "public",
+    "index.js"
+  ],
+  "scripts": {
+    "pretest": "bower install",
+    "test": "npm run test-lib & npm run test-public",
+    "test-lib": "mocha test/lib/**/*.spec.js --recursive",
+    "test-public": "karma start test/karma.conf.js",
+    "coverage": "istanbul cover --dir coverage/lib node_modules/mocha/bin/_mocha -- -R spec test/lib/**/*.spec.js",
+    "coveragetocodeclimate": "codeclimate-test-reporter < ./coverage/lib/lcov.info && codeclimate-test-reporter < ./coverage/public/lcov.info"
+  },
+  "author": {
+    "name": "Daniel Pacak",
+    "email": "pacak.daniel@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Jan-Otto Kröpke",
+      "email": "npm@jkropke.de",
+      "url": "http://github.com/jkroepke/"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkroepke/featurebook-js.git"
+  },
+  "engines": {
+    "node": ">= 8"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "@jkroepke/featurebook-api": "^1.0.0",
+    "@jkroepke/featurebook-markdown": "^1.0.0",
+    "fs-extra": "^8.1.0",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "bower": "^1.8.8",
+    "chai": "^4.2.0",
+    "codeclimate-test-reporter": "^0.5.1",
+    "istanbul": "^0.4.5",
+    "jasmine-core": "^3.4.0",
+    "karma": "^4.1.0",
+    "karma-coverage": "^1.1.2",
+    "karma-jasmine": "^2.0.1",
+    "karma-ng-html2js-preprocessor": "^1.0.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "mocha": "^6.2.0",
+    "phantomjs-prebuilt": "^2.1.16"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "featurebook-js",
+  "private": true,
+  "licence": "MIT",
+  "devDependencies": {
+    "lerna": "^3.16.1"
+  }
+}

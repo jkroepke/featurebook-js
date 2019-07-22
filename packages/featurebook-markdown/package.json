@@ -1,0 +1,39 @@
+{
+  "name": "@jkroepke/featurebook-markdown",
+  "version": "1.0.0",
+  "description": "Markdown parser for FeatureBook",
+  "main": "index.js",
+  "files": [
+    "lib",
+    "index.js"
+  ],
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "author": {
+    "name": "Daniel Pacak",
+    "email": "pacak.daniel@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Jan-Otto Kröpke",
+      "email": "npm@jkropke.de",
+      "url": "http://github.com/jkroepke/"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jkroepke/featurebook-js.git"
+  },
+  "engines": {
+    "node": ">= 8"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "markdown-it": "^9.0.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0"
+  }
+}
