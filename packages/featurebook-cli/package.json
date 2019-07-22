@@ -1,6 +1,6 @@
 {
   "name": "@jkroepke/featurebook-cli",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "description": "FeatureBook's command line interface",
   "preferGlobal": true,
   "bin": {

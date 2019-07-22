@@ -1,6 +1,6 @@
 {
   "name": "@jkroepke/featurebook-serve",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "description": "FeatureBook's HTTP server",
   "main": "index.js",
   "files": [
@@ -37,8 +37,8 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "@jkroepke/featurebook-api": "^1.0.0",
-    "@jkroepke/featurebook-markdown": "^1.0.0",
+    "@jkroepke/featurebook-api": "^1.0.0-beta.0",
+    "@jkroepke/featurebook-markdown": "^1.0.0-beta.0",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15"
   },
