@@ -30,6 +30,9 @@
       "url": "http://github.com/jkroepke/"
     }
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "dependencies": {
     "@jkroepke/featurebook-api": "^1.0.0-beta.0",
@@ -43,5 +46,6 @@
     "codeclimate-test-reporter": "^0.5.1",
     "istanbul": "^0.4.5",
     "mocha": "^6.2.0"
-  }
+  },
+  "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
 }

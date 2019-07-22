@@ -27,6 +27,9 @@
       "url": "http://github.com/jkroepke/"
     }
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jkroepke/featurebook-js.git"
@@ -55,5 +58,6 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "mocha": "^6.2.0",
     "phantomjs-prebuilt": "^2.1.16"
-  }
+  },
+  "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
 }

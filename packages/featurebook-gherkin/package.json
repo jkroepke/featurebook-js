@@ -23,6 +23,9 @@
       "url": "http://github.com/jkroepke/"
     }
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jkroepke/featurebook-js.git"
@@ -39,5 +42,6 @@
     "codeclimate-test-reporter": "^0.5.1",
     "istanbul": "^0.4.5",
     "mocha": "^6.2.0"
-  }
+  },
+  "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
 }
