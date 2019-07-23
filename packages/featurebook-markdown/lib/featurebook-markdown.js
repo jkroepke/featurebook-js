@@ -15,7 +15,7 @@ module.exports = {
 
 function descriptionMarkdownToHTML(feature, options) {
   var background = feature.background,
-    scenarioDefinitions = feature.scenarioDefinitions,
+    scenarioDefinitions = feature.children,
     scenarioDefinition,
     examples,
     example;
@@ -26,7 +26,7 @@ function descriptionMarkdownToHTML(feature, options) {
   if (background && background.description) {
     background.description = render(background.description, options);
   }
-  if (scenarioDefinitions) {
+  if (scenarioDefinitions && scenarioDefinitions.type == "Scenario") {
     for (var s = 0; s < scenarioDefinitions.length; s++) {
       scenarioDefinition = scenarioDefinitions[s];
       examples = scenarioDefinition.examples;
