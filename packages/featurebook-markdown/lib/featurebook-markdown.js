@@ -26,7 +26,7 @@ function descriptionMarkdownToHTML(feature, options) {
   if (background && background.description) {
     background.description = render(background.description, options);
   }
-  if (scenarioDefinitions && scenarioDefinitions.type == "Scenario") {
+  if (scenarioDefinitions) {
     for (var s = 0; s < scenarioDefinitions.length; s++) {
       scenarioDefinition = scenarioDefinitions[s];
       examples = scenarioDefinition.examples;
