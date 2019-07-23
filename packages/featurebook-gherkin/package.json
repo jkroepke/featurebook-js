@@ -35,7 +35,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "gherkin": "^6.0.17"
+    "gherkin": "^5.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
