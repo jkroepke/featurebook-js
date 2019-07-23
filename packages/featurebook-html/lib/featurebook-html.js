@@ -40,7 +40,7 @@ function html(specDir, outputDir) {
           path: node.path,
           metadata: metadata,
           specTree: specTree,
-          feature: markdown.descriptionMarkdownToHTML(feature, getMarkdownOptions(nextPathPrefix)).feature
+          feature: markdown.descriptionMarkdownToHTML(feature.feature, getMarkdownOptions(nextPathPrefix))
         }));
       } catch (err) {
         console.warn(color.red('Error printing feature `%s`: %s'), featurePath, err);
