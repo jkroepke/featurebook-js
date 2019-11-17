@@ -32,7 +32,7 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "commander": "^2.20.0"
+    "commander": "^4.0.1"
   },
   "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
 }
