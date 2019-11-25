@@ -8,7 +8,8 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "lint": "eslint lib/*.js index.js"
   },
   "author": {
     "name": "Daniel Pacak",
@@ -33,9 +34,12 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "markdown-it": "^9.0.1"
+    "markdown-it": "^10.0.0"
   },
   "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "chai": "^4.2.0",
     "mocha": "^6.2.0"
   },

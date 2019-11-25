@@ -1,177 +1,139 @@
-'use strict';
+const fsPromises = require('fs').promises;
+const path = require('path');
+const ignore = require('ignore');
+const gherkin = require('./gherkin');
+const helpers = require('./helpers');
+const constants = require('./constants');
+const { version } = require('../package.json');
 
-var pkg = require('../package.json');
-var constants = require('./constants');
-var walker = require('./dir-walker');
-var gherkin = require('@jkroepke/featurebook-gherkin');
-var fs = require('fs');
-var path = require('path');
-var minimatch = require('minimatch');
-var ignoreFile = require('./ignore-file');
+const getVersion = () => version;
 
-module.exports = {
-  NODE_FILE: constants.NODE_FILE,
-  NODE_DIRECTORY: constants.NODE_DIRECTORY,
+const readMetadata = async (specDir) => {
+  const metadataFile = path.join(specDir, constants.DEFAULT_METADATA_FILE_NAME);
 
-  getVersion: getVersion,
-  readSpecTree: readSpecTree,
-  readSpecTreeSync: readSpecTreeSync,
-  readMetadata: readMetadata,
-  readMetadataSync: readMetadataSync,
-  readFeature: readFeature,
-  readFeatureSync: readFeatureSync,
-  readSummary: readSummary,
-  readSummarySync: readSummarySync
+  try {
+    await fsPromises.stat(metadataFile);
+  } catch (e) {
+    return {};
+  }
+
+  try {
+    const fileContent = await fsPromises.readFile(metadataFile, constants.DEFAULT_FILE_ENCODING);
+    return JSON.parse(fileContent.toString());
+  } catch (e) {
+    console.error(e);
+    return {};
+  }
 };
 
-function getVersion() {
-  return pkg.version;
-}
-
-function readSpecTree(specDir, callback) {
-  ignoreFile.getPatterns(specDir, function (err, patterns) {
-    if (err) {
-      return callback(err);
-    }
-    walker.findTree(specDir, ignoredFilesFilter(patterns), function (ex, specTree) {
-      if (ex) {
-        return callback(ex);
-      }
-      callback(null, processSpecTree(specDir, specTree));
-    });
-  });
-}
-
-function readSpecTreeSync(specDir) {
-  var ignorePatterns = ignoreFile.getPatternsSync(specDir);
-  return processSpecTree(specDir, walker.findTreeSync(specDir, ignoredFilesFilter(ignorePatterns)));
-}
-
-function readMetadata(specDir, callback) {
-  var metadataFile = path.join(specDir, constants.DEFAULT_METADATA_FILE_NAME);
-
-  fs.stat(metadataFile, function (err) {
-    if (err) {
-      return callback(null, null);
-    } else {
-      fs.readFile(metadataFile, constants.DEFAULT_FILE_ENCODING, function (ex, metadataFileContents) {
-        if (ex) {
-          return callback(err);
-        } else {
-          return callback(null, JSON.parse(metadataFileContents));
-        }
-      });
-    }
-  });
-}
-
-function readMetadataSync(specDir) {
-  var metadataFile = path.join(specDir, constants.DEFAULT_METADATA_FILE_NAME);
+const readFeature = async (featureFile) => {
   try {
-    fs.statSync(metadataFile);
-    return JSON.parse(fs.readFileSync(metadataFile, constants.DEFAULT_FILE_ENCODING));
-  } catch (err) {
+    return await gherkin.parse(featureFile);
+  } catch (e) {
+    console.error(e);
     return null;
   }
-}
+};
 
-function readFeature(featureFile, callback) {
-  fs.readFile(featureFile, constants.DEFAULT_FILE_ENCODING, function (err, contents) {
-    if (err) {
-      return callback(err);
-    }
-    try {
-      return callback(null, gherkin.parse(contents));
-    } catch (ex) {
-      return callback(ex);
-    }
-  });
-}
+const readSummary = async (dir) => {
+  const summaryFile = path.join(dir, constants.DEFAULT_SUMMARY_FILE_NAME);
 
-function readFeatureSync(featureFile) {
-  return gherkin.parse(fs.readFileSync(featureFile, constants.DEFAULT_FILE_ENCODING));
-}
-
-function readSummary(dir, callback) {
-  var summaryFile = path.join(dir, constants.DEFAULT_SUMMARY_FILE_NAME);
-
-  fs.stat(summaryFile, function (err) {
-    if (err) {
-      return callback(null, null);
-    } else {
-      fs.readFile(summaryFile, constants.DEFAULT_FILE_ENCODING, function (err, summary) {
-        if (err) {
-          return callback(err);
-        } else {
-          return callback(null, summary);
-        }
-      });
-    }
-  });
-}
-
-function readSummarySync(dir) {
-  var summaryFile = path.join(dir, constants.DEFAULT_SUMMARY_FILE_NAME);
-
-  if (fs.existsSync(summaryFile)) {
-    return fs.readFileSync(summaryFile, constants.DEFAULT_FILE_ENCODING);
+  try {
+    await fsPromises.stat(summaryFile);
+  } catch (e) {
+    return null;
   }
+
+  try {
+    return await fsPromises.readFile(summaryFile, constants.DEFAULT_FILE_ENCODING);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
+const getDisplayNameOverwrite = async (featureFile) => {
+  const feature = await readFeature(featureFile);
+  const displayNameRegex = /#\s*featurebookDisplayName:\s*(.+)/;
+  const comments = feature.comments
+    .filter((comment) => displayNameRegex.test(comment.text))
+    .map((comment) => comment.text);
+
+  if (comments.length > 0) {
+    return displayNameRegex.exec(comments[0])[1];
+  }
+
   return null;
-}
+};
 
-function processSpecTree(specDir, specTree) {
+const processSpecTree = async (specDir, specTree) => {
+  const traverse = async (file) => {
+    const node = {
+      ...file,
+      displayName: helpers.getDisplayName(file.name),
+    };
 
-  function traverse(node) {
-    node.displayName = getDisplayName(node.name);
-    if (node.type === constants.NODE_FILE) {
+    if (file.type === 'file') {
       try {
-        var displayNameOverride = getDisplayNameOverwrite(path.join(specDir, node.path));
+        const displayNameOverride = await getDisplayNameOverwrite(path.join(specDir, node.path));
         if (displayNameOverride) {
           node.displayName = displayNameOverride;
         }
       } catch (err) {
         // ignore
       }
-    }
-    if (node.type === constants.NODE_DIRECTORY) {
-      node.children.forEach(traverse);
-    }
-  }
+    } else if (file.type === 'directory') {
+      const results = [];
+      node.children = [];
 
-  var cloned = Object.assign({}, specTree);
-  traverse(cloned);
-  return cloned;
-}
-
-function getDisplayNameOverwrite(featureFile) {
-  var feature = readFeatureSync(featureFile);
-  var displayNameRegex = /#\s*featurebookDisplayName:\s*(.+)/;
-  var comments = feature.comments.filter(function (comment) {
-    return displayNameRegex.test(comment.text);
-  }).map(function (comment) {
-    return comment.text;
-  });
-  if (comments.length > 0) {
-    return displayNameRegex.exec(comments[0])[1];
-  }
-  return null;
-}
-
-function getDisplayName(fileName) {
-  var withoutUnderscores = fileName.replace(/_/g, ' ');
-  var uppercased = withoutUnderscores.charAt(0).toUpperCase() + withoutUnderscores.slice(1);
-  return uppercased.replace(/\.feature/g, '');
-}
-
-function ignoredFilesFilter(patterns) {
-  return function (dir, file) {
-    var fullPath = path.join(dir, file);
-    for (var i = 0; i < patterns.length; i++) {
-      var pattern = patterns[i];
-      if (minimatch(fullPath, pattern) || minimatch(file, pattern)) {
-        return false;
+      for (const f of file.children) {
+        results.push(
+          traverse(f)
+            .then((ret) => { node.children.push(ret); }),
+        );
       }
+
+      await Promise.all(results);
+
+      node.children.sort((a, b) => a.name.localeCompare(b.name));
     }
-    return true;
+
+    return node;
   };
-}
+
+  return traverse({ ...specTree });
+};
+
+const readSpecTree = async (specDir) => {
+  const ig = ignore().add(constants.DEFAULT_IGNORE_PATTERNS);
+  const ignoreFile = path.join(specDir, constants.DEFAULT_IGNORE_FILE_NAME);
+
+  try {
+    await fsPromises.stat(ignoreFile);
+
+    try {
+      const fileContent = await fsPromises.readFile(ignoreFile);
+      ig.add(fileContent.toString());
+    } catch (e) {
+      console.error(e);
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  try {
+    const specTree = await helpers.findInDir(specDir, ig.createFilter());
+    return await processSpecTree(specDir, specTree);
+  } catch (e) {
+    console.error(e);
+    return {};
+  }
+};
+
+module.exports = {
+  getVersion,
+  readSpecTree,
+  readMetadata,
+  readFeature,
+  readSummary,
+};

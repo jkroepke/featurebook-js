@@ -3,6 +3,6 @@
   "private": true,
   "licence": "MIT",
   "devDependencies": {
-    "lerna": "^3.16.1"
+    "lerna": "^3.18.4"
   }
 }

@@ -10,7 +10,8 @@
   ],
   "preferGlobal": true,
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "lint": "eslint {bin,cmds}/*.js"
   },
   "keywords": [
     "gherkin",
@@ -59,8 +60,13 @@
     "@jkroepke/featurebook-pdf": "^1.0.0-beta.3",
     "@jkroepke/featurebook-serve": "^1.0.0-beta.5",
     "bash-color": "^0.0.4",
-    "commander": "^2.20.0",
-    "opener": "^1.5.1"
+    "opener": "^1.5.1",
+    "yargs": "^15.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
   },
   "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
 }
