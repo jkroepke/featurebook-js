@@ -1,5 +1,3 @@
-'use strict';
-
 var _ = require('lodash');
 var color = require('bash-color');
 var fs = require('fs-extra');

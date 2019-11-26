@@ -1,6 +1,6 @@
 const os = require('os');
 const dns = require('dns');
-const color = require('bash-color');
+const color = require('colors/safe');
 const opener = require('opener');
 const featurebookServe = require('@jkroepke/featurebook-serve');
 

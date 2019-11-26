@@ -1,128 +1,110 @@
-'use strict';
+const fs = require('fs');
+const fse = require('fs-extra');
+const color = require('colors/safe');
+const path = require('path');
+const pug = require('pug');
+const featurebook = require('@jkroepke/featurebook-api');
+const markdown = require('@jkroepke/featurebook-markdown');
 
-var _ = require('lodash');
-var color = require('bash-color');
-var fs = require('fs-extra');
-var path = require('path');
-var pug = require('pug');
-var featurebook = require('@jkroepke/featurebook-api');
-var markdown = require('@jkroepke/featurebook-markdown');
+const helper = require('./helper');
 
-var TEMPLATES_DIR = path.join(__dirname, './META-INF/html');
-var NO_SUMMARY_MESSAGE_MD = 'You can put some content here by creating the `SUMMARY.md` Markdown file.';
+const TEMPLATES_DIR = path.join(__dirname, '..', 'resources');
 
-function html(specDir, outputDir) {
-  var metadata = featurebook.readMetadataSync(specDir);
-  var indexTemplate = path.join(TEMPLATES_DIR, 'index.pug');
-  var featureTemplate = path.join(TEMPLATES_DIR, 'feature.pug');
-  var compileOptions = {debug: false, pretty: true};
+const NO_SUMMARY_MESSAGE_MD = 'You can put some content here by creating the `SUMMARY.md` Markdown file.';
 
-  metadata = (metadata === null ? {} : metadata);
+const getMarkdownOptions = (pathPrefix) => ({
+  imageRenderer: helper.getImageRenderer(pathPrefix),
+  linkRenderer: helper.getLinkRenderer(pathPrefix),
+});
 
-  fs.mkdirpSync(outputDir);
-  copyAssetsDir();
+const html = async (specDir, outputDir) => {
+  const metadata = await featurebook.readMetadata(specDir) || {};
+  const specTree = await featurebook.readSpecTree(specDir);
 
-  var specTree = featurebook.readSpecTreeSync(specDir);
+  const assetsDir = path.join(specDir, 'assets');
+  const localTemplatesDir = path.join(specDir, 'templates');
 
-  var indexTemplateCompiled = pug.compileFile(indexTemplate, compileOptions);
-  var featureTemplateCompiled = pug.compileFile(featureTemplate, compileOptions);
+  const indexTemplate = fs.existsSync(path.join(localTemplatesDir, 'index.pug'))
+    ? path.join(localTemplatesDir, 'index.pug')
+    : path.join(TEMPLATES_DIR, 'index.pug');
 
-  print(specTree);
+  const featureTemplate = fs.existsSync(path.join(localTemplatesDir, 'feature.pug'))
+    ? path.join(localTemplatesDir, 'feature.pug')
+    : path.join(TEMPLATES_DIR, 'feature.pug');
 
-  function print(node, pathPrefix) {
-    if (node.type === featurebook.NODE_FILE) {
-      var featurePath = path.join(specDir, node.path);
-      var nextPathPrefix = pathPrefix || './';
+  fs.mkdirSync(outputDir, { recursive: true });
+
+  try {
+    const stats = await fs.promises.stat(assetsDir);
+    if (stats.isDirectory()) {
+      await fse.copy(assetsDir, path.join(outputDir, 'assets'))
+        .catch((e) => { console.error(e); });
+    }
+  } catch (err) {
+    // ignore
+  }
+
+  const indexTemplateCompiled = pug.compileFile(indexTemplate, { debug: false, pretty: true });
+  const featureTemplateCompiled = pug.compileFile(featureTemplate, { debug: false, pretty: true });
+
+  const print = async (node, pathPrefix) => {
+    if (node.type === 'file') {
+      const featurePath = path.join(specDir, node.path);
+      const nextPathPrefix = pathPrefix || './';
       try {
-        var feature = featurebook.readFeatureSync(featurePath);
-        fs.writeFileSync(path.join(outputDir, node.path + '.html'), featureTemplateCompiled({
+        const feature = await featurebook.readFeature(featurePath);
+
+        console.log(feature);
+
+        const renderedFeature = markdown.descriptionMarkdownToHTML(
+          feature.feature,
+          getMarkdownOptions(nextPathPrefix),
+        );
+
+        const renderedTemplate = featureTemplateCompiled({
           pathPrefix: nextPathPrefix,
           path: node.path,
-          metadata: metadata,
-          specTree: specTree,
-          feature: markdown.descriptionMarkdownToHTML(feature.feature, getMarkdownOptions(nextPathPrefix))
-        }));
+          metadata,
+          specTree,
+          feature: renderedFeature,
+        });
+
+        await fs.promises.writeFile(path.join(outputDir, `${node.path}.html`), renderedTemplate)
+          .catch((e) => { console.log(e); });
       } catch (err) {
         console.warn(color.red('Error printing feature `%s`: %s'), featurePath, err);
       }
-    }
-    if (node.type === featurebook.NODE_DIRECTORY) {
-      fs.mkdirpSync(path.join(outputDir, node.path));
+    } else if (node.type === 'directory') {
+      fs.mkdirSync(path.join(outputDir, node.path), { recursive: true });
 
-      var summary = featurebook.readSummarySync(path.join(specDir, node.path)) || NO_SUMMARY_MESSAGE_MD;
-      var summaryOutputPath = path.join(outputDir, node.path, 'index.html');
-      var nextPathPrefix = pathPrefix ? pathPrefix + '../' : './';
+      const summary = await featurebook.readSummary(
+        path.join(specDir, node.path),
+      ) || NO_SUMMARY_MESSAGE_MD;
 
-      fs.writeFileSync(summaryOutputPath, indexTemplateCompiled({
+      const summaryOutputPath = path.join(outputDir, node.path, 'index.html');
+      const nextPathPrefix = pathPrefix ? `${pathPrefix}../` : './';
+
+      const renderedMarkdown = markdown.render(summary, getMarkdownOptions(nextPathPrefix));
+
+      const renderedTemplate = indexTemplateCompiled({
         pathPrefix: nextPathPrefix,
-        metadata: metadata,
-        specTree: specTree,
-        summary: markdown.render(summary, getMarkdownOptions(nextPathPrefix))
-      }));
+        metadata,
+        specTree,
+        summary: renderedMarkdown,
+      });
 
-      node.children.forEach(function (child) {
+      await fs.promises.writeFile(summaryOutputPath, renderedTemplate)
+        .catch((e) => { console.log(e); });
+
+      node.children.forEach((child) => {
         print(child, nextPathPrefix);
       });
     }
-  }
-
-  function copyAssetsDir() {
-    var assetsDir = path.join(specDir, 'assets');
-    try {
-      var stats = fs.statSync(assetsDir);
-      if (stats.isDirectory()) {
-        fs.copySync(assetsDir, path.join(outputDir, 'assets'));
-      }
-    } catch (err) {
-      // ignore
-    }
-  }
-
-}
-
-function getMarkdownOptions(pathPrefix) {
-  return {
-    imageRenderer: getImageRenderer(pathPrefix),
-    linkRenderer: getLinkRenderer(pathPrefix)
-  };
-}
-
-function getImageRenderer(pathPrefix) {
-
-  return function (attrs) {
-    var src = attrs.src;
-    attrs.src = isAsset(src) ? removeSchemaPrefix(src) : src;
-    return attrs;
   };
 
-  function isAsset(href) {
-    return _.startsWith(href, markdown.ASSET_URL_SCHEMA);
-  }
-
-  function removeSchemaPrefix(url) {
-    return pathPrefix + url.substring(markdown.ASSET_URL_SCHEMA.length);
-  }
-
-}
-
-function getLinkRenderer(pathPrefix) {
-
-  return function (attrs) {
-    var href = attrs.href;
-    attrs.href = isFeature(href) ? removeSchemaPrefixAndAppendHtmlSuffix(href) : href;
-    return attrs;
-  };
-
-  function isFeature(href) {
-    return _.startsWith(href, markdown.FEATURE_URL_SCHEMA);
-  }
-
-  function removeSchemaPrefixAndAppendHtmlSuffix(url) {
-    return pathPrefix + url.substring(markdown.FEATURE_URL_SCHEMA.length) + '.html';
-  }
-
-}
+  await print(specTree);
+};
 
 module.exports = html;
-html.$imageRenderer = getImageRenderer('');
-html.$linkRenderer = getLinkRenderer('');
+html.$imageRenderer = helper.getImageRenderer('');
+html.$linkRenderer = helper.getLinkRenderer('');

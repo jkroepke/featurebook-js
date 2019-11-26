@@ -12,6 +12,7 @@ const render = (text, markdownOptions) => {
       const attrs = markdownOptions.linkRenderer({
         href: token.attrs[token.attrIndex('href')][1],
       });
+
       // FIXME Currently a custom image renderer can override only the href attribute.
       token.attrSet('href', attrs.href);
       return defaultLinkRenderer(tokens, idx, options, env, self);
@@ -39,17 +40,22 @@ const render = (text, markdownOptions) => {
 
 const descriptionMarkdownToHTML = async (feature, options) => {
   const renderedFeature = feature;
-  const { background } = feature;
 
-  if (feature.description) {
+  if (Object.prototype.hasOwnProperty.call(feature, 'description')) {
     renderedFeature.description = render(feature.description, options);
   }
 
-  if (background && background.description) {
-    background.description = render(background.description, options);
+  if (
+    Object.prototype.hasOwnProperty.call(feature, 'background')
+    && Object.prototype.hasOwnProperty.call(feature.background, 'description')
+  ) {
+    renderedFeature.background = {
+      ...feature.background,
+      description: render(feature.background.description, options),
+    };
   }
 
-  if (!feature.children) {
+  if (!Object.prototype.hasOwnProperty.call(feature, 'children')) {
     return renderedFeature;
   }
 

@@ -38,7 +38,7 @@
   "dependencies": {
     "@jkroepke/featurebook-api": "^1.0.0-beta.3",
     "@jkroepke/featurebook-markdown": "^1.0.0-beta.5",
-    "bash-color": "^0.0.4",
+    "colors": "^1.4.0",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
     "pug": "^2.0.4"
