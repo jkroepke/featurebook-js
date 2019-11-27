@@ -2,7 +2,7 @@ const path = require('path');
 const featurebookPdf = require('@jkroepke/featurebook-pdf');
 
 exports.command = 'pdf [spec-dir]';
-exports.desc = 'build the specification HTML document';
+exports.desc = 'build the specification PDF document';
 
 exports.builder = (yargs) => yargs.options({
   o: {

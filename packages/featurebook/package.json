@@ -29,15 +29,16 @@
     "beautiful",
     "markdown"
   ],
-  "author": {
-    "name": "Daniel Pacak",
-    "email": "pacak.daniel@gmail.com"
+  "author":
+  {
+    "name": "Jan-Otto Kröpke",
+    "email": "npm@jkropke.de",
+    "url": "https://github.com/jkroepke/"
   },
   "contributors": [
     {
-      "name": "Jan-Otto Kröpke",
-      "email": "npm@jkropke.de",
-      "url": "http://github.com/jkroepke/"
+      "name": "Daniel Pacak",
+      "email": "pacak.daniel@gmail.com"
     }
   ],
   "publishConfig": {
@@ -52,7 +53,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">= 8"
+    "node": ">= 10"
   },
   "dependencies": {
     "@jkroepke/featurebook-api": "^1.0.0-beta.3",

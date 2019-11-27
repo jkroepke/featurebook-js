@@ -54,8 +54,6 @@ const html = async (specDir, outputDir) => {
       try {
         const feature = await featurebook.readFeature(featurePath);
 
-        console.log(feature);
-
         const renderedFeature = markdown.descriptionMarkdownToHTML(
           feature.feature,
           getMarkdownOptions(nextPathPrefix),

@@ -11,15 +11,16 @@
     "test": "mocha --recursive",
     "lint": "eslint lib/*.js index.js"
   },
-  "author": {
-    "name": "Daniel Pacak",
-    "email": "pacak.daniel@gmail.com"
+  "author":
+  {
+    "name": "Jan-Otto Kröpke",
+    "email": "npm@jkropke.de",
+    "url": "https://github.com/jkroepke/"
   },
   "contributors": [
     {
-      "name": "Jan-Otto Kröpke",
-      "email": "npm@jkropke.de",
-      "url": "http://github.com/jkroepke/"
+      "name": "Daniel Pacak",
+      "email": "pacak.daniel@gmail.com"
     }
   ],
   "publishConfig": {
@@ -30,7 +31,7 @@
     "url": "https://github.com/jkroepke/featurebook-js.git"
   },
   "engines": {
-    "node": ">= 8"
+    "node": ">= 10"
   },
   "license": "Apache-2.0",
   "dependencies": {

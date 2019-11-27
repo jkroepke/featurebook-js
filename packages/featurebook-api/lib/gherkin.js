@@ -4,11 +4,13 @@ const getParsedGherkin = (featureFile, options) => new Promise((resolve, reject)
   const stream = gherkin.fromPaths([featureFile], options);
   const data = [];
 
-  stream.on('error', reject);
+  stream.on('error', (e) => {
+    console.log(e);
+    reject(e);
+  });
 
   stream.on('data', (chunk) => {
     console.log(chunk);
-
     if (Object.prototype.hasOwnProperty.call(chunk, 'source')) {
       data.push({ source: chunk.source, name: null, pickles: [] });
     } else if (Object.prototype.hasOwnProperty.call(chunk, 'gherkinDocument')) {
@@ -30,7 +32,7 @@ const parse = async (featureFile) => {
     includePickles: false,
   };
 
-  return getParsedGherkin(featureFile, options).then((data) => data);
+  return getParsedGherkin(featureFile, options);
 };
 
 module.exports = {

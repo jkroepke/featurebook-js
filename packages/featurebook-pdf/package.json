@@ -18,17 +18,18 @@
     "url": "git+https://github.com/jkroepke/featurebook-js.git"
   },
   "engines": {
-    "node": ">= 8"
+    "node": ">= 10"
   },
-  "author": {
-    "name": "Daniel Pacak",
-    "email": "pacak.daniel@gmail.com"
+  "author":
+  {
+    "name": "Jan-Otto Kröpke",
+    "email": "npm@jkropke.de",
+    "url": "https://github.com/jkroepke/"
   },
   "contributors": [
     {
-      "name": "Jan-Otto Kröpke",
-      "email": "npm@jkropke.de",
-      "url": "http://github.com/jkroepke/"
+      "name": "Daniel Pacak",
+      "email": "pacak.daniel@gmail.com"
     }
   ],
   "publishConfig": {

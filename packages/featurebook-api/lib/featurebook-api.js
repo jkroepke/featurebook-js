@@ -28,10 +28,12 @@ const readMetadata = async (specDir) => {
 
 const readFeature = async (featureFile) => {
   try {
-    return await gherkin.parse(featureFile);
+    const feature = await gherkin.parse(featureFile);
+    process.exit(1);
+    return feature;
   } catch (e) {
     console.error(e);
-    return null;
+    return [];
   }
 };
 
