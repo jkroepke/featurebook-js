@@ -81,7 +81,7 @@ const serve = async (specDir, port) => {
     }
   });
 
-  app.use((err, req, res, next) => {
+  app.use((err, req, res) => {
     res.status(500).send({ error: err.message });
   });
 

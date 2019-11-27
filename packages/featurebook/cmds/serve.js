@@ -28,5 +28,5 @@ exports.handler = async (argv) => {
   const shareLink = `http://${address}:${port}`;
 
   console.log(color.yellow(`It is available to all computers in the local network at ${shareLink}`));
-//  opener(shareLink);
+  opener(shareLink);
 };
