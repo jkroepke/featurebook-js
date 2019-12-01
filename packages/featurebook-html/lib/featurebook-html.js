@@ -3,7 +3,7 @@ const fse = require('fs-extra');
 const color = require('colors/safe');
 const path = require('path');
 const pug = require('pug');
-const featurebook = require('@jkroepke/featurebook-api');
+const api = require('@jkroepke/featurebook-api');
 const markdown = require('@jkroepke/featurebook-markdown');
 
 const helper = require('./helper');
@@ -18,8 +18,8 @@ const getMarkdownOptions = (pathPrefix) => ({
 });
 
 const html = async (specDir, outputDir) => {
-  const metadata = await featurebook.readMetadata(specDir) || {};
-  const specTree = await featurebook.readSpecTree(specDir);
+  const metadata = await api.readMetadata(specDir) || {};
+  const specTree = await api.readSpecTree(specDir);
 
   const assetsDir = path.join(specDir, 'assets');
   const localTemplatesDir = path.join(specDir, 'templates');
@@ -52,19 +52,32 @@ const html = async (specDir, outputDir) => {
       const featurePath = path.join(specDir, node.path);
       const nextPathPrefix = pathPrefix || './';
       try {
-        const feature = await featurebook.readFeature(featurePath);
+        const features = await api.readFeature(featurePath);
+        const results = [];
+        const renderedFeatures = [];
 
-        const renderedFeature = markdown.descriptionMarkdownToHTML(
-          feature.feature,
-          getMarkdownOptions(nextPathPrefix),
-        );
+        for (const feature of features) {
+          results.push(
+            markdown.descriptionMarkdownToHTML(
+              feature.feature,
+              getMarkdownOptions(nextPathPrefix),
+            ).then((renderedFeature) => {
+              renderedFeatures.push({
+                ...feature,
+                feature: renderedFeature,
+              });
+            }),
+          );
+        }
+
+        await Promise.all(results);
 
         const renderedTemplate = featureTemplateCompiled({
           pathPrefix: nextPathPrefix,
           path: node.path,
           metadata,
           specTree,
-          feature: renderedFeature,
+          features: renderedFeatures,
         });
 
         await fs.promises.writeFile(path.join(outputDir, `${node.path}.html`), renderedTemplate)
@@ -75,7 +88,7 @@ const html = async (specDir, outputDir) => {
     } else if (node.type === 'directory') {
       fs.mkdirSync(path.join(outputDir, node.path), { recursive: true });
 
-      const summary = await featurebook.readSummary(
+      const summary = await api.readSummary(
         path.join(specDir, node.path),
       ) || NO_SUMMARY_MESSAGE_MD;
 

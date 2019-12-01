@@ -1,4 +1,5 @@
 const md = require('markdown-it')({
+  html: true,
   linkify: true,
 });
 
@@ -60,12 +61,13 @@ const descriptionMarkdownToHTML = async (feature, options) => {
   }
 
   for (const scenarioDefinition of feature.children) {
-    if (scenarioDefinition.description) {
+    if (Object.prototype.hasOwnProperty.call(scenarioDefinition, 'description')) {
       scenarioDefinition.description = render(scenarioDefinition.description, options);
     }
-
-    for (const example of scenarioDefinition.examples) {
-      example.description = render(example.description, options);
+    if (Object.prototype.hasOwnProperty.call(scenarioDefinition, 'examples')) {
+      for (const example of scenarioDefinition.examples) {
+        example.description = render(example.description, options);
+      }
     }
   }
 

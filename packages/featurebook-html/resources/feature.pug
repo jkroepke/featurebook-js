@@ -13,10 +13,17 @@ mixin printStep(step)
 
 doctype html
 html
-  head
+  head(lang="en")
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    link(rel='icon', href=pathPrefix + 'assets/favicon.ico')
+
     title #{metadata.title} #{metadata.version}
     style
       include stylesheet.css
+
+    link(rel='stylesheet', href=pathPrefix + 'assets/stylesheet.css')
+    script(src=pathPrefix + 'assets/scripts.js')
 
   body
     div.featurebook-container
@@ -24,37 +31,42 @@ html
       include _spec-tree.pug
 
       main.featurebook-main
-        div.featurebook-feature-name #{feature.keyword}: #{feature.name}
+        each feature in features
+          if feature.feature.tags
+            each tag in feature.feature.tags
+              div.featurebook-tag= tag.name
 
-        div.featurebook-feature-description.featurebook-markdown !{feature.description}
+          div.featurebook-feature-name #{feature.feature.keyword}: #{feature.feature.name}
 
-        if feature.children
-          each children in feature.children
-            if children.type == "Background"
-              div.featurebook-background
-                div.featurebook-background-name #{children.keyword}: #{children.name}
-                each step in children.steps
-                  +printStep(step)
+          div.featurebook-feature-description.featurebook-markdown !{feature.feature.description}
 
-            if children.type == "Scenario" || children.type == "ScenarioOutline"
-              div.featurebook-scenario-definition
-                if children.tags
-                  each tag in children.tags
-                    div.featurebook-tag= tag.name
-                div.featurebook-scenario-definition-name= children.keyword + ': ' + children.name
-                div !{children.description}
-                each step in children.steps
-                  +printStep(step)
+          if feature.feature.children
+            each children in feature.feature.children
+              if children.background
+                div.featurebook-background
+                  div.featurebook-background-name #{children.background.keyword}: #{children.background.name}
+                  each step in children.background.steps
+                    +printStep(step)
 
-                if children.examples
-                  each example in children.examples
-                    div.featurebook-examples
-                      div.featurebook-examples-name= example.keyword + ': ' + example.name
-                      table.featurebook-data-table
-                        tr
-                          each cell in example.tableHeader.cells
-                            th= cell.value
-                        each row in example.tableBody
+              if children.scenario || children.scenarioOutline
+                div.featurebook-scenario-definition
+                  if children.scenario.tags
+                    each tag in children.scenario.tags
+                      div.featurebook-tag= tag.name
+                  div.featurebook-scenario-definition-name= children.scenario.keyword + ': ' + children.scenario.name
+                  div !{children.scenario.description}
+                  each step in children.scenario.steps
+                    +printStep(step)
+
+                  if children.scenario.examples
+                    each example in children.scenario.examples
+                      div.featurebook-examples
+                        div.featurebook-examples-name= example.keyword + ': ' + example.name
+                        table.featurebook-data-table
                           tr
-                            each cell in row.cells
-                              td= cell.value
+                            each cell in example.tableHeader.cells
+                              th= cell.value
+                          each row in example.tableBody
+                            tr
+                              each cell in row.cells
+                                td= cell.value

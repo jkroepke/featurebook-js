@@ -26,11 +26,9 @@ const readMetadata = async (specDir) => {
   }
 };
 
-const readFeature = async (featureFile) => {
+const readFeature = async (featureFile, options) => {
   try {
-    const feature = await gherkin.parse(featureFile);
-    process.exit(1);
-    return feature;
+    return await gherkin.parse(featureFile, options);
   } catch (e) {
     console.error(e);
     return [];

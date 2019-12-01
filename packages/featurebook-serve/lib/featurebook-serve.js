@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const featurebook = require('@jkroepke/featurebook-api');
+const api = require('@jkroepke/featurebook-api');
 const markdown = require('@jkroepke/featurebook-markdown');
 
 const { imageRenderer, linkRenderer } = require('./helper');
@@ -32,7 +32,7 @@ const serve = async (specDir, port) => {
 
   app.get('/api/rest/metadata', async (req, res, next) => {
     try {
-      const metadata = await featurebook.readMetadata(specDir);
+      const metadata = await api.readMetadata(specDir);
 
       return res.send(metadata);
     } catch (error) {
@@ -44,7 +44,7 @@ const serve = async (specDir, port) => {
   app.get('/api/rest/summary/:path?', async (req, res, next) => {
     const summaryDir = req.params.path ? path.join(specDir, req.params.path) : specDir;
     try {
-      const summary = await featurebook.readSummary(summaryDir);
+      const summary = await api.readSummary(summaryDir);
 
       if (summary === null) {
         return res.status(404).end();
@@ -58,7 +58,7 @@ const serve = async (specDir, port) => {
 
   app.get('/api/rest/spec/tree', async (req, res, next) => {
     try {
-      const specTree = await featurebook.readSpecTree(specDir);
+      const specTree = await api.readSpecTree(specDir);
       return res.send(specTree);
     } catch (error) {
       return next(error);
@@ -69,7 +69,7 @@ const serve = async (specDir, port) => {
     const responseBody = {};
 
     try {
-      const feature = await featurebook.readFeature(path.join(specDir, req.params.path));
+      const feature = await api.readFeature(path.join(specDir, req.params.path));
 
       responseBody.status = 'success';
       responseBody.data = await markdown.descriptionMarkdownToHTML(feature, markdownOptions);

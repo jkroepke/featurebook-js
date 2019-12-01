@@ -5,16 +5,18 @@ const getParsedGherkin = (featureFile, options) => new Promise((resolve, reject)
   const data = [];
 
   stream.on('error', (e) => {
-    console.log(e);
+    console.error(e);
     reject(e);
   });
 
   stream.on('data', (chunk) => {
-    console.log(chunk);
     if (Object.prototype.hasOwnProperty.call(chunk, 'source')) {
-      data.push({ source: chunk.source, name: null, pickles: [] });
+      data.push({ source: chunk.source, pickles: [] });
     } else if (Object.prototype.hasOwnProperty.call(chunk, 'gherkinDocument')) {
-      data[data.length - 1].name = chunk.gherkinDocument.feature.name;
+      data[data.length - 1] = {
+        ...data[data.length - 1],
+        ...chunk.gherkinDocument,
+      };
     } else {
       data[data.length - 1].pickles.push(chunk.pickle);
     }
@@ -25,14 +27,17 @@ const getParsedGherkin = (featureFile, options) => new Promise((resolve, reject)
   });
 });
 
-const parse = async (featureFile) => {
-  const options = {
-    includeSource: false,
-    includeGherkinDocument: false,
-    includePickles: false,
+const parse = async (featureFile, options) => {
+  const defaultOptions = {
+    includeSource: true,
+    includeGherkinDocument: true,
+    includePickles: true,
   };
 
-  return getParsedGherkin(featureFile, options);
+  return getParsedGherkin(featureFile, {
+    ...defaultOptions,
+    ...options,
+  });
 };
 
 module.exports = {
