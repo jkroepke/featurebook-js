@@ -39,7 +39,7 @@
     "bash-color": "^0.0.4",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
-    "pdfkit": "^0.10.0"
+    "pdfkit": "^0.11.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
