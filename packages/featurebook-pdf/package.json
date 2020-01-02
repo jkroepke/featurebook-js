@@ -10,8 +10,7 @@
   "scripts": {
     "test": "mocha test/lib/**/*.spec.js --recursive",
     "lint": "eslint lib/*.js index.js",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec test/lib/**/*.spec.js",
-    "coveragetocodeclimate": "codeclimate-test-reporter < ./coverage/lcov.info"
+    "coverage": "nyc npm run test"
   },
   "repository": {
     "type": "git",
@@ -38,15 +37,14 @@
   "dependencies": {
     "@jkroepke/featurebook-api": "^1.0.0-beta.3",
     "colors": "^1.4.0",
-    "pdfkit": "^0.10.0"
+    "pdfkit": "^0.11.0"
   },
   "devDependencies": {
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
     "chai": "^4.2.0",
-    "codeclimate-test-reporter": "^0.5.1",
-    "istanbul": "^0.4.5",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "nyc": "^15.0.0",
     "mocha": "^6.2.0"
   },
   "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"

@@ -14,11 +14,9 @@
     "test-lib": "mocha test/lib/**/*.spec.js --recursive",
     "test-public": "karma start test/karma.conf.js",
     "lint": "eslint lib/*.js index.js",
-    "coverage": "istanbul cover --dir coverage/lib node_modules/mocha/bin/_mocha -- -R spec test/lib/**/*.spec.js",
-    "coveragetocodeclimate": "codeclimate-test-reporter < ./coverage/lib/lcov.info && codeclimate-test-reporter < ./coverage/public/lcov.info"
+    "coverage": "nyc npm run test"
   },
-  "author":
-  {
+  "author": {
     "name": "Jan-Otto Kröpke",
     "email": "npm@jkropke.de",
     "url": "https://github.com/jkroepke/"
@@ -46,13 +44,12 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
     "bower": "^1.8.8",
     "chai": "^4.2.0",
-    "codeclimate-test-reporter": "^0.5.1",
-    "istanbul": "^0.4.5",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "nyc": "^15.0.0",
     "jasmine-core": "^3.4.0",
     "karma": "^4.1.0",
     "karma-coverage": "^2.0.1",

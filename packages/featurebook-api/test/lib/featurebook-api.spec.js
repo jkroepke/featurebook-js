@@ -1,162 +1,88 @@
-'use strict';
 
-var EOL = require('os').EOL;
+const { EOL } = require('os');
 
-var chai = require('chai');
-var expect = chai.expect;
+const chai = require('chai');
 
-var featurebook = require('./../../lib/featurebook-api');
+const { expect } = chai;
 
-describe('featurebook-api', function () {
+const featurebook = require('./../../lib/featurebook-api');
 
-  describe('#featurebook', function () {
-
-    it('should export node type constants', function () {
-      expect(featurebook.NODE_FILE).to.equal('file');
-      expect(featurebook.NODE_DIRECTORY).to.equal('directory');
-    });
-
-  });
-
-  describe('#getVersion', function () {
-    it('should return version of this API', function () {
+describe('featurebook-api', () => {
+  describe('#getVersion', () => {
+    it('should return version of this API', () => {
       expect(featurebook.getVersion()).to.equal(require('./../../package.json').version);
     });
   });
 
-  describe('#readSpecTreeSync', function () {
-
-    it('should return specification tree object', function () {
-      var specTree = featurebook.readSpecTreeSync('test/resources/specs/tiny');
-      expectTinySpecTree(specTree);
-    });
-
-  });
-
-  describe('#readSpecTree', function () {
-
-    it('should propagate specification tree object', function (done) {
-      featurebook.readSpecTree('test/resources/specs/tiny', function (err, specTree) {
+  describe('#readSpecTree', () => {
+    it('should propagate specification tree object', (done) => {
+      featurebook.readSpecTree('test/resources/specs/tiny', (err, specTree) => {
         expect(err).to.be.null;
         expectTinySpecTree(specTree);
         done();
       });
     });
-
   });
 
-  describe('#readMetadataSync', function () {
 
-    it('should return null given a specification directory without the metadata descriptor', function () {
-      var metadata = featurebook.readMetadataSync('test/resources/features');
-      expect(metadata).to.be.null;
-    });
-
-    it('should return the metadata object given a specification directory with the metadata descriptor', function () {
-      var metadata = featurebook.readMetadataSync('test/resources/specs/tiny');
-      expect(metadata).to.deep.equal({title: 'Tiny Specification', version: 'v1.0.3'});
-    });
-
-  });
-
-  describe('#readMetadata', function () {
-
-    it('should propagate null given a specification directory without the metadata descriptor', function (done) {
-      featurebook.readMetadata('test/resources/features', function (err, metadata) {
+  describe('#readMetadata', () => {
+    it('should propagate null given a specification directory without the metadata descriptor', (done) => {
+      featurebook.readMetadata('test/resources/features', (err, metadata) => {
         expect(err).to.be.null;
         expect(metadata).to.be.null;
         done();
       });
     });
 
-    it('should propagate the metadata object given a specification directory with the metadata descriptor', function (done) {
-      featurebook.readMetadata('test/resources/specs/tiny', function (err, metadata) {
-        expect(metadata).to.deep.equal({title: 'Tiny Specification', version: 'v1.0.3'});
+    it('should propagate the metadata object given a specification directory with the metadata descriptor', (done) => {
+      featurebook.readMetadata('test/resources/specs/tiny', (err, metadata) => {
+        expect(metadata).to.deep.equal({ title: 'Tiny Specification', version: 'v1.0.3' });
         done();
       });
     });
-
   });
 
-  describe('#readFeatureSync', function () {
-
-    it('should throw an error given a non-existent feature file', function () {
-      expect(function () {
-        featurebook.readFeatureSync('__nonexistentfeaturefile__');
-      }).to.throw(Error);
-    });
-
-    it('should throw an error given an unparsable feature file', function () {
-      expect(function () {
-        featurebook.readFeatureSync('test/resources/features/unparsable.feature');
-      }).to.throw();
-    });
-
-    it('should return the feature object given a valid feature file', function () {
-      var feature = featurebook.readFeatureSync('test/resources/features/simple.feature').feature;
-      expectSampleFeature(feature);
-    });
-
-  });
-
-  describe('#readFeature', function () {
-
-    it('should propagate an error given a non-existent feature file', function (done) {
-      featurebook.readFeature('__nonexistentfeaturefile__', function (err) {
+  describe('#readFeature', () => {
+    it('should propagate an error given a non-existent feature file', (done) => {
+      featurebook.readFeature('__nonexistentfeaturefile__', (err) => {
         expect(err).to.exist;
         done();
       });
     });
 
-    it('should propagate an error given an unparsable feature file', function (done) {
-      featurebook.readFeature('test/resources/features/unparsable.feature', function (err) {
+    it('should propagate an error given an unparsable feature file', (done) => {
+      featurebook.readFeature('test/resources/features/unparsable.feature', (err) => {
         expect(err).to.exist;
         done();
       });
     });
 
-    it('should propagate the feature object given a valid feature file', function (done) {
-      featurebook.readFeature('test/resources/features/simple.feature', function (err, document) {
+    it('should propagate the feature object given a valid feature file', (done) => {
+      featurebook.readFeature('test/resources/features/simple.feature', (err, document) => {
         expect(err).to.not.exist;
         expectSampleFeature(document.feature);
         done();
       });
     });
-
   });
 
-  describe('#readSummarySync', function () {
 
-    it('should return null given a directory without the summary file', function () {
-      var summary = featurebook.readSummarySync('__nonexistentsummaryfile_');
-      expect(summary).to.be.null;
-    });
-
-    it('shoud return contents given a directory with the summary file', function () {
-      var summary = featurebook.readSummarySync('test/resources/specs/tiny');
-      expect(summary).to.equal('# Tiny Specification' + EOL);
-    });
-
-  });
-
-  describe('#readSummary', function () {
-
-    it('should propagate null given a directory without the summary file', function (done) {
-      featurebook.readSummary('__nonexistentsummaryfile_', function (err, summary) {
+  describe('#readSummary', () => {
+    it('should propagate null given a directory without the summary file', (done) => {
+      featurebook.readSummary('__nonexistentsummaryfile_', (err, summary) => {
         expect(err).to.be.null;
         expect(summary).to.be.null;
         done();
       });
     });
 
-    it('should propagate contents given a directory with the summary file', function (done) {
-      featurebook.readSummary('test/resources/specs/tiny', function (err, summary) {
+    it('should propagate contents given a directory with the summary file', (done) => {
+      featurebook.readSummary('test/resources/specs/tiny', (err, summary) => {
         expect(err).to.be.null;
-        expect(summary).to.equal('# Tiny Specification' + EOL);
+        expect(summary).to.equal(`# Tiny Specification${EOL}`);
         done();
       });
     });
-
   });
 
   function expectSampleFeature(feature) {
@@ -183,67 +109,66 @@ describe('featurebook-api', function () {
 
   function expectTinySpecTree(specTree) {
     expect(specTree).to.deep.equal({
-      "path": ".",
-      "name": "tiny",
-      "displayName": "Tiny",
-      "type": "directory",
-      "children": [
+      path: '.',
+      name: 'tiny',
+      displayName: 'Tiny',
+      type: 'directory',
+      children: [
         {
-          "path": "section-a",
-          "name": "section-a",
-          "displayName": "Section-a",
-          "type": "directory",
-          "children": [
+          path: 'section-a',
+          name: 'section-a',
+          displayName: 'Section-a',
+          type: 'directory',
+          children: [
             {
-              "path": "section-a/file-a.feature",
-              "name": "file-a.feature",
-              "displayName": "File-a",
-              "type": "file"
+              path: 'section-a/file-a.feature',
+              name: 'file-a.feature',
+              displayName: 'File-a',
+              type: 'file',
             },
             {
-              "path": "section-a/file-b.feature",
-              "name": "file-b.feature",
-              "displayName": "File-b",
-              "type": "file"
+              path: 'section-a/file-b.feature',
+              name: 'file-b.feature',
+              displayName: 'File-b',
+              type: 'file',
             },
             {
-              "path": "section-a/section-b",
-              "name": "section-b",
-              "displayName": "Section-b",
-              "type": "directory",
-              "children": [
+              path: 'section-a/section-b',
+              name: 'section-b',
+              displayName: 'Section-b',
+              type: 'directory',
+              children: [
                 {
-                  "path": "section-a/section-b/file-c.feature",
-                  "name": "file-c.feature",
-                  "displayName": "Feature C Overwrite",
-                  "type": "file"
-                }
-              ]
-            }
-          ]
+                  path: 'section-a/section-b/file-c.feature',
+                  name: 'file-c.feature',
+                  displayName: 'Feature C Overwrite',
+                  type: 'file',
+                },
+              ],
+            },
+          ],
         },
         {
-          "path": "section-c",
-          "name": "section-c",
-          "displayName": "Section-c",
-          "type": "directory",
-          "children": [
+          path: 'section-c',
+          name: 'section-c',
+          displayName: 'Section-c',
+          type: 'directory',
+          children: [
             {
-              "path": "section-c/file-d.feature",
-              "name": "file-d.feature",
-              "displayName": "Feature D Overwrite",
-              "type": "file"
-            }
-          ]
+              path: 'section-c/file-d.feature',
+              name: 'file-d.feature',
+              displayName: 'Feature D Overwrite',
+              type: 'file',
+            },
+          ],
         },
         {
-          "displayName": "Unparsable",
-          "name": "unparsable.feature",
-          "path": "unparsable.feature",
-          "type": "file"
-        }
-      ]
+          displayName: 'Unparsable',
+          name: 'unparsable.feature',
+          path: 'unparsable.feature',
+          type: 'file',
+        },
+      ],
     });
   }
-
 });

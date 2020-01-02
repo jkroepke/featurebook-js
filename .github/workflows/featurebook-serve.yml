@@ -26,7 +26,12 @@ jobs:
         working-directory: packages/featurebook-serve
       - run: npm run test
         working-directory: packages/featurebook-serve
-      - run: npm run coverage
+      - name: npm run coverage
         working-directory: packages/featurebook-serve
-      - run: npm run coveragetocodeclimate
-        working-directory: packages/featurebook-serve
+        uses: paambaati/codeclimate-action@v2.3.0
+        env:
+          CC_TEST_REPORTER_ID: 18908f02e2f04c41f84ac447800fdca9a1fae3a15ba319228a4484408d827111
+        with:
+          coverageCommand: npm run coverage
+          debug: true
+

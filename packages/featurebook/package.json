@@ -64,9 +64,9 @@
     "yargs": "^15.0.2"
   },
   "devDependencies": {
-    "eslint": "^6.6.0",
+    "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
+    "eslint-plugin-import": "^2.19.1"
   },
   "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
 }
