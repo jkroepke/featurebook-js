@@ -59,7 +59,7 @@
     "@jkroepke/featurebook-pdf": "^1.0.0-beta.3",
     "@jkroepke/featurebook-serve": "^1.0.0-beta.5",
     "bash-color": "^0.0.4",
-    "commander": "^2.20.0",
+    "commander": "^4.1.0",
     "opener": "^1.5.1"
   },
   "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
