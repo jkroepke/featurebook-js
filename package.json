@@ -3,6 +3,10 @@
   "private": true,
   "licence": "MIT",
   "scripts": {
+    "clean": "lerna clean --yes",
+    "bootstrap": "lerna bootstrap --no-ci",
+    "fix-lock-files": "npm run clean && npm run bootstrap",
+    "update": "npm update && rm -rf node_modules package-lock.json && env CI=1 npm i && npm dedup && lerna exec --parallel --no-bail 'npm update && rm -rf node_modules package-lock.json && env CI=1 npm i && npm dedup' && npm run fix-lock-files",
     "lint": "eslint --ignore-path .gitignore packages/**/{bin,lib,test}/*.js"
   },
   "devDependencies": {
