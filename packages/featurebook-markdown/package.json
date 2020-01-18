@@ -10,6 +10,22 @@
   "scripts": {
     "test": "mocha"
   },
+  "keywords": [
+    "gherkin",
+    "cucumber",
+    "editor",
+    "xp",
+    "bdd",
+    "attd",
+    "feature",
+    "specification",
+    "documentation",
+    "browser",
+    "viewer",
+    "cute",
+    "beautiful",
+    "markdown"
+  ],
   "author": {
     "name": "Jan-Otto Kröpke",
     "email": "npm@jkropke.de",

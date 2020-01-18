@@ -1,7 +1,7 @@
 FeatureBook
 ===========
 
-[![Build Status](https://github.com/jkroepke/featurebook-js/workflows/ci/badge.svg)](https://github.com/jkroepke/featurebook-js)
+[![Build Status](https://github.com/jkroepke/featurebook-js/workflows/CI/badge.svg)](https://github.com/jkroepke/featurebook-js)
 [![npm](https://img.shields.io/npm/dw/@jkroepke/featurebook)](https://www.npmjs.com/package/@jkroepke/featurebook)
 [![npm version](https://img.shields.io/npm/v/@jkroepke/featurebook)](https://www.npmjs.com/package/@jkroepke/featurebook)
 [![dependencies Status](https://david-dm.org/jkroepke/featurebook-js/status.svg?path=packages/featurebook)](https://david-dm.org/jkroepke/featurebook-js?path=packages/featurebook)

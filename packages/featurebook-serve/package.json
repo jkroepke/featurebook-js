@@ -15,6 +15,22 @@
     "test-public": "karma start test/karma.conf.js",
     "coverage": "nyc --reporter=lcov --reporter=text npm run test"
   },
+  "keywords": [
+    "gherkin",
+    "cucumber",
+    "editor",
+    "xp",
+    "bdd",
+    "attd",
+    "feature",
+    "specification",
+    "documentation",
+    "browser",
+    "viewer",
+    "cute",
+    "beautiful",
+    "markdown"
+  ],
   "author": {
     "name": "Jan-Otto Kröpke",
     "email": "npm@jkropke.de",
