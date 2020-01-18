@@ -1,4 +1,4 @@
-name: CI featurebook
+name: CI featurebook-js (code climate)
 
 on:
   pull_request:
@@ -8,18 +8,13 @@ on:
 
 jobs:
   node:
-    strategy:
-      matrix:
-        node: [ '8', '10', '12' ]
-      fail-fast: true
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 12
       - run: npm ci
       - run: npx lerna bootstrap
       - name: code climate
