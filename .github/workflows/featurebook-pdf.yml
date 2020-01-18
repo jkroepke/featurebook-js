@@ -27,7 +27,6 @@ jobs:
       - run: npm run test
         working-directory: packages/featurebook-pdf
       - name: npm run coverage
-        working-directory: packages/featurebook-pdf
         uses: paambaati/codeclimate-action@v2.4.0
         env:
           CC_TEST_REPORTER_ID: 18908f02e2f04c41f84ac447800fdca9a1fae3a15ba319228a4484408d827111
