@@ -1,13 +1,13 @@
-### Fork of https://github.com/SOFTWARE-CLINIC/featurebook-serve
-* Updated dependencies
-* Minor code changes (if dependencies introduce some breaking changes)
+[![Build Status](https://github.com/jkroepke/featurebook-js/workflows/ci/badge.svg)](https://github.com/jkroepke/featurebook-js)
+[![npm](https://img.shields.io/npm/dw/@jkroepke/featurebook-serve)](https://www.npmjs.com/package/@jkroepke/featurebook-serve)
+[![npm version](https://img.shields.io/npm/v/@jkroepke/featurebook-serve)](https://www.npmjs.com/package/@jkroepke/featurebook-serve)
+[![dependencies Status](https://david-dm.org/jkroepke/featurebook-js/status.svg?path=packages/featurebook-serve)](https://david-dm.org/jkroepke/featurebook-js?path=packages/featurebook-serve)
+[![Code Climate](https://codeclimate.com/github/jkroepke/featurebook-js-serve/badges/gpa.svg)](https://codeclimate.com/github/jkroepke/featurebook-js-serve)
+[![Test Coverage](https://codeclimate.com/github/jkroepke/featurebook-js-serve/badges/coverage.svg)](https://codeclimate.com/github/jkroepke/featurebook-js-serve/coverage)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 # featurebook-serve
 
 > FeatureBook's HTTP server
 
-[![Build Status](https://travis-ci.org/SOFTWARE-CLINIC/featurebook-serve.svg?branch=master)](https://travis-ci.org/SOFTWARE-CLINIC/featurebook-serve)
-[![npm version](https://badge.fury.io/js/featurebook-serve.svg)](https://badge.fury.io/js/featurebook-serve)
-[![dependencies Status](https://david-dm.org/SOFTWARE-CLINIC/featurebook-serve/status.svg)](https://david-dm.org/SOFTWARE-CLINIC/featurebook-serve)
-[![Code Climate](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-serve/badges/gpa.svg)](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-serve)
-[![Test Coverage](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-serve/badges/coverage.svg)](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-serve/coverage)
+Fork of https://github.com/SOFTWARE-CLINIC/featurebook-serve

@@ -8,9 +8,8 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha test/lib/**/*.spec.js --recursive",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec test/lib/**/*.spec.js",
-    "coveragetocodeclimate": "codeclimate-test-reporter < ./coverage/lcov.info"
+    "test": "mocha",
+    "coverage": "nyc --reporter=lcov --reporter=text npm run test"
   },
   "repository": {
     "type": "git",
@@ -20,14 +19,14 @@
     "node": ">= 8"
   },
   "author": {
-    "name": "Daniel Pacak",
-    "email": "pacak.daniel@gmail.com"
+    "name": "Jan-Otto Kröpke",
+    "email": "npm@jkropke.de",
+    "url": "https://github.com/jkroepke/"
   },
   "contributors": [
     {
-      "name": "Jan-Otto Kröpke",
-      "email": "npm@jkropke.de",
-      "url": "http://github.com/jkroepke/"
+      "name": "Daniel Pacak",
+      "email": "pacak.daniel@gmail.com"
     }
   ],
   "publishConfig": {
@@ -36,16 +35,16 @@
   "license": "MIT",
   "dependencies": {
     "@jkroepke/featurebook-api": "^1.0.0-beta.3",
-    "bash-color": "^0.0.4",
-    "fs-extra": "^8.1.0",
-    "lodash": "^4.17.15",
-    "pdfkit": "^0.10.0"
+    "colors": "^1.4.0",
+    "commonmark": "^0.29.1",
+    "pdfkit": "^0.11.0",
+    "pdfkit-commonmark": "^0.2.0",
+    "voilab-pdf-table": "^0.5.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "codeclimate-test-reporter": "^0.5.1",
-    "istanbul": "^0.4.5",
-    "mocha": "^6.2.0"
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0"
   },
   "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
 }

@@ -1,0 +1,141 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npx lerna bootstrap
+      - run: npm run lint
+
+  featurebook:
+    strategy:
+      matrix:
+        node: [ '8', '10', '12' ]
+      fail-fast: true
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+        working-directory: packages/featurebook
+      - run: npm run test
+        working-directory: packages/featurebook
+
+  featurebook-api:
+    strategy:
+      matrix:
+        node: [ '8', '10', '12' ]
+      fail-fast: true
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+        working-directory: packages/featurebook-api
+      - run: npm run test
+        working-directory: packages/featurebook-api
+      - run: npm run coverage
+        working-directory: packages/featurebook-api
+
+  featurebook-html:
+    strategy:
+      matrix:
+        node: [ '8', '10', '12' ]
+      fail-fast: true
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+        working-directory: packages/featurebook-html
+      - run: npm run test
+        working-directory: packages/featurebook-html
+
+  featurebook-markdown:
+    strategy:
+      matrix:
+        node: [ '8', '10', '12' ]
+      fail-fast: true
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+        working-directory: packages/featurebook-markdown
+      - run: npm run test
+        working-directory: packages/featurebook-markdown
+
+  featurebook-pdf:
+    strategy:
+      matrix:
+        node: [ '8', '10', '12' ]
+      fail-fast: true
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+        working-directory: packages/featurebook-pdf
+      - run: npm run test
+        working-directory: packages/featurebook-pdf
+      - run: npm run coverage
+        working-directory: packages/featurebook-pdf
+
+  featurebook-serve:
+    strategy:
+      matrix:
+        node: [ '8', '10', '12' ]
+      fail-fast: true
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+        working-directory: packages/featurebook-serve
+      - run: npm run test
+        working-directory: packages/featurebook-serve
+      - run: npm run coverage
+        working-directory: packages/featurebook-serve

@@ -1,12 +1,13 @@
-### Fork of https://github.com/SOFTWARE-CLINIC/featurebook-pdf
-* Updated dependencies
-* Minor code changes (if dependencies introduce some breaking changes)
+[![Build Status](https://github.com/jkroepke/featurebook-js/workflows/ci/badge.svg)](https://github.com/jkroepke/featurebook-js)
+[![npm](https://img.shields.io/npm/dw/@jkroepke/featurebook-pdf)](https://www.npmjs.com/package/@jkroepke/featurebook-pdf)
+[![npm version](https://img.shields.io/npm/v/@jkroepke/featurebook-pdf)](https://www.npmjs.com/package/@jkroepke/featurebook-pdf)
+[![dependencies Status](https://david-dm.org/jkroepke/featurebook-js/status.svg?path=packages/featurebook-pdf)](https://david-dm.org/jkroepke/featurebook-js?path=packages/featurebook-pdf)
+[![Code Climate](https://codeclimate.com/github/jkroepke/featurebook-js-pdf/badges/gpa.svg)](https://codeclimate.com/github/jkroepke/featurebook-js-pdf)
+[![Test Coverage](https://codeclimate.com/github/jkroepke/featurebook-js-pdf/badges/coverage.svg)](https://codeclimate.com/github/jkroepke/featurebook-js-pdf/coverage)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 # featurebook-pdf
 
 > FeatureBook's PDF converter
 
-[![Build Status](https://travis-ci.org/SOFTWARE-CLINIC/featurebook-pdf.svg?branch=master)](https://travis-ci.org/SOFTWARE-CLINIC/featurebook-pdf)
-[![npm version](https://badge.fury.io/js/featurebook-pdf.svg)](https://badge.fury.io/js/featurebook-pdf)
-[![Code Climate](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-pdf/badges/gpa.svg)](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-pdf)
-[![Test Coverage](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-pdf/badges/coverage.svg)](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-pdf/coverage)
+Fork of https://github.com/SOFTWARE-CLINIC/featurebook-pdf

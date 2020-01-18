@@ -1,22 +1,20 @@
-<div ng-if="!hasError()" class="featurebook-feature">
-    <div class="featurebook-tag" ng-repeat="tag in featureResponse.data.tags track by $index">{{tag.name}}</div>
-    <div class="featurebook-feature-name">{{featureResponse.data.keyword}}: {{featureResponse.data.name}}</div>
-    <div class="featurebook-feature-description featurebook-markdown"
-         ng-bind-html="featureResponse.data.description"></div>
+<div class="featurebook-feature" ng-if="!hasError()"  ng-repeat="feature in featureResponse.data track by $index">
+    <div class="featurebook-tag" ng-repeat="tag in feature.feature.tags track by $index">{{tag.name}}</div>
+    <div class="featurebook-feature-name">{{feature.feature.keyword}}: {{feature.feature.name}}</div>
+    <div class="featurebook-feature-description featurebook-markdown" ng-bind-html="feature.feature.description"></div>
 
-    <div class="featurebook-background" ng-show="{{featureResponse.data.background}}">
-        <div class="featurebook-background-name">{{featureResponse.data.background.keyword}}:
-            {{featureResponse.data.background.name}}
+    <div class="featurebook-background" ng-repeat="children in feature.feature.children" ng-if="children.background">
+        <div class="featurebook-background-name">{{children.background.keyword}}:
+            {{children.background.name}}
         </div>
         <div class="featurebook-background-description"
-             ng-if="featureResponse.data.background.description"
-             ng-bind-html="featureResponse.data.background.description"></div>
+             ng-if="children.background.description"
+             ng-bind-html="children.background.description"></div>
 
-        <gherkin-step ng-model="step" ng-repeat="step in featureResponse.data.background.steps"></gherkin-step>
+        <gherkin-step ng-model="step" ng-repeat="step in children.background.steps"></gherkin-step>
     </div>
 
-    <gherkin-scenario ng-model="scenario"
-                      ng-repeat="scenario in featureResponse.data.scenarioDefinitions"></gherkin-scenario>
+    <gherkin-scenario ng-model="children.scenario" ng-repeat="children in feature.feature.children" ng-if="children.scenario"></gherkin-scenario>
 </div>
 <div ng-if="hasError()">
     <div class="featurebook-error-message">{{featureResponse.message}}</div>

@@ -2,7 +2,26 @@
   "name": "featurebook-js",
   "private": true,
   "licence": "MIT",
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore packages/**/{bin,lib,test}/*.js"
+  },
   "devDependencies": {
-    "lerna": "^3.16.1"
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "husky": "^4.0.10",
+    "lerna": "^3.20.2",
+    "lint-staged": "^10.0.0-beta.15"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }

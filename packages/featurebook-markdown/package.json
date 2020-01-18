@@ -8,17 +8,17 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha"
   },
   "author": {
-    "name": "Daniel Pacak",
-    "email": "pacak.daniel@gmail.com"
+    "name": "Jan-Otto Kröpke",
+    "email": "npm@jkropke.de",
+    "url": "https://github.com/jkroepke/"
   },
   "contributors": [
     {
-      "name": "Jan-Otto Kröpke",
-      "email": "npm@jkropke.de",
-      "url": "http://github.com/jkroepke/"
+      "name": "Daniel Pacak",
+      "email": "pacak.daniel@gmail.com"
     }
   ],
   "publishConfig": {
@@ -33,11 +33,12 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "markdown-it": "^9.0.1"
+    "markdown-it": "^10.0.0",
+    "object.fromentries": "^2.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.0"
+    "mocha": "^7.0.0"
   },
   "gitHead": "d95165a5fdf5501ec668955acaf21c60801da1c2"
 }

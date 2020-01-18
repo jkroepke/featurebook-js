@@ -1,16 +1,13 @@
-### Fork of https://github.com/SOFTWARE-CLINIC/featurebook
-* Updated dependencies
-* Minor code changes (if dependencies introduce some breaking changes)
-
 FeatureBook
 ===========
 
-[![Build Status](https://travis-ci.org/SOFTWARE-CLINIC/featurebook.svg)](https://travis-ci.org/SOFTWARE-CLINIC/featurebook)
-[![npm version](https://badge.fury.io/js/featurebook.svg)](http://badge.fury.io/js/featurebook)
-[![dependencies](https://david-dm.org/SOFTWARE-CLINIC/featurebook.svg)](https://david-dm.org/SOFTWARE-CLINIC/featurebook)
-[![Code Climate](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook/badges/gpa.svg)](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook)
-[![Test Coverage](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook/badges/coverage.svg)](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook/coverage)
-[![Join the chat at https://gitter.im/SOFTWARE-CLINIC/featurebook](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SOFTWARE-CLINIC/featurebook?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://github.com/jkroepke/featurebook-js/workflows/ci/badge.svg)](https://github.com/jkroepke/featurebook-js)
+[![npm](https://img.shields.io/npm/dw/@jkroepke/featurebook)](https://www.npmjs.com/package/@jkroepke/featurebook)
+[![npm version](https://img.shields.io/npm/v/@jkroepke/featurebook)](https://www.npmjs.com/package/@jkroepke/featurebook)
+[![dependencies Status](https://david-dm.org/jkroepke/featurebook-js/status.svg?path=packages/featurebook)](https://david-dm.org/jkroepke/featurebook-js?path=packages/featurebook)
+[![Code Climate](https://codeclimate.com/github/jkroepke/featurebook-js/badges/gpa.svg)](https://codeclimate.com/github/jkroepke/featurebook-js)
+[![Test Coverage](https://codeclimate.com/github/jkroepke/featurebook-js/badges/coverage.svg)](https://codeclimate.com/github/jkroepke/featurebook-js/coverage)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 * [Introduction](#introduction)
 * [Rationale](#rationale)
@@ -267,14 +264,8 @@ public API.
 You wanna contribute to FeatureBook? That is truly great!
 [Here](https://github.com/SOFTWARE-CLINIC/featurebook/wiki/Contributing) are some tips to get you started.
 
-## Project roadmap
-
-FeatureBook started as a command line tool based on Node.js. However this requires project managers and other non-tech
-people to install `node` and `npm` and have basic understanding of those command line tools. Even if it's not very complicated
-to install `node` I decided to distribute FeatureBook as as cross-platform desktop application
-based on [electron](https://electron.atom.io/). You can find the corresponding repository here
-[featurebook-desktop](https://github.com/SOFTWARE-CLINIC/featurebook-desktop).
-
 ## License
 
 Code is under the [MIT](https://opensource.org/licenses/MIT).
+
+Fork of https://github.com/SOFTWARE-CLINIC/featurebook

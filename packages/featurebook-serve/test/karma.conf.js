@@ -1,3 +1,4 @@
+// eslint-disable-next-line func-names
 module.exports = function (config) {
   config.set({
     basePath: './../',
@@ -26,32 +27,32 @@ module.exports = function (config) {
       'public/scripts/encode-uri-component.filter.js',
       'public/scripts/highlight-gherkin-variables.filter.js',
 
-      'test/public/**/*.js'
+      'test/public/**/*.js',
     ],
     browsers: [
-      'PhantomJS'
+      'PhantomJS',
     ],
     plugins: [
       'karma-ng-html2js-preprocessor',
       'karma-jasmine',
       'karma-phantomjs-launcher',
-      'karma-coverage'
+      'karma-coverage',
     ],
     preprocessors: {
       'public/views/**/*.html': ['ng-html2js'],
-      'public/scripts/**/*.js': 'coverage'
+      'public/scripts/**/*.js': 'coverage',
     },
     ngHtml2JsPreprocessor: {
       stripPrefix: 'public/',
-      moduleName: 'scFeatureBook.templates'
+      moduleName: 'scFeatureBook.templates',
     },
     coverageReporter: {
       dir: 'coverage',
       reporters: [
-        {type: 'lcov', subdir: 'public'}
-      ]
+        { type: 'lcov', subdir: 'public' },
+      ],
     },
     logLevel: config.LOG_INFO,
-    singleRun: true
+    singleRun: true,
   });
 };

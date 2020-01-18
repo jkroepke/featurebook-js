@@ -1,5 +1,11 @@
 /.idea
 *.iml
 
-node_modules
-package-lock.json
+npm-debug.log
+node_modules/
+dist/
+bower_components/
+coverage/
+
+.nyc_output/
+features
