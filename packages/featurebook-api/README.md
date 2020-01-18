@@ -1,13 +1,12 @@
-### Fork of https://github.com/SOFTWARE-CLINIC/featurebook-api
-* Updated dependencies
-* Minor code changes (if dependencies introduce some breaking changes)
+[![Build Status](https://github.com/jkroepke/featurebook-js/workflows/ci/badge.svg)](https://github.com/jkroepke/featurebook-js)
+[![npm](https://img.shields.io/npm/dw/@jkroepke/featurebook-api)](https://www.npmjs.com/package/@jkroepke/featurebook-api)
+[![npm version](https://img.shields.io/npm/v/@jkroepke/featurebook-api)](https://www.npmjs.com/package/@jkroepke/featurebook-api)
+[![dependencies Status](https://david-dm.org/jkroepke/featurebook-js/status.svg?path=packages/featurebook-api)](https://david-dm.org/jkroepke/featurebook-js?path=packages/featurebook-api)
+[![Code Climate](https://codeclimate.com/github/jkroepke/featurebook-js-api/badges/gpa.svg)](https://codeclimate.com/github/jkroepke/featurebook-js-api)
+[![Test Coverage](https://codeclimate.com/github/jkroepke/featurebook-js-api/badges/coverage.svg)](https://codeclimate.com/github/jkroepke/featurebook-js-api/coverage)
 
 # featurebook-api
 
 > FeatureBook's API
 
-[![Build Status](https://travis-ci.org/SOFTWARE-CLINIC/featurebook-api.svg?branch=master)](https://travis-ci.org/SOFTWARE-CLINIC/featurebook-api)
-[![npm version](https://badge.fury.io/js/featurebook-api.svg)](https://badge.fury.io/js/featurebook-api)
-[![Dependency Status](https://david-dm.org/SOFTWARE-CLINIC/featurebook-api.svg)](https://david-dm.org/SOFTWARE-CLINIC/featurebook-api)
-[![Code Climate](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-api/badges/gpa.svg)](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-api)
-[![Test Coverage](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-api/badges/coverage.svg)](https://codeclimate.com/github/SOFTWARE-CLINIC/featurebook-api/coverage)
+Fork of https://github.com/SOFTWARE-CLINIC/featurebook-api

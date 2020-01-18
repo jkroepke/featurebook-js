@@ -5,16 +5,14 @@
 [![Code Climate](https://codeclimate.com/github/jkroepke/featurebook-js/badges/gpa.svg)](https://codeclimate.com/github/jkroepke/featurebook-js)
 [![Test Coverage](https://codeclimate.com/github/jkroepke/featurebook-js/badges/coverage.svg)](https://codeclimate.com/github/jkroepke/featurebook-js/coverage)
 
-![](https://github.com/jkroepke/featurebook-js/workflows/featurebook-js/badge.svg)
-![](https://github.com/jkroepke/featurebook-js/workflows/featurebook/badge.svg)
-![](https://github.com/jkroepke/featurebook-js/workflows/featurebook-api/badge.svg)
-![](https://github.com/jkroepke/featurebook-js/workflows/featurebook-html/badge.svg)
-![](https://github.com/jkroepke/featurebook-js/workflows/featurebook-markdown/badge.svg)
-![](https://github.com/jkroepke/featurebook-js/workflows/featurebook-pdf/badge.svg)
-![](https://github.com/jkroepke/featurebook-js/workflows/featurebook-serve/badge.svg)
+![](https://github.com/jkroepke/featurebook-js/workflows/ci/badge.svg)
+![](https://github.com/jkroepke/featurebook-js/workflows/codeclimate/badge.svg)
+
+# Documentation
+
+See https://github.com/jkroepke/featurebook-js/blob/master/packages/featurebook/README.md
 
 # featurebook-js
 
 Fork of multiple featurebook repos from https://github.com/SOFTWARE-CLINIC
-* Updated dependencies
-* Minor code changes (if dependencies introduce some breaking changes)
+
