@@ -14,7 +14,7 @@
     "test-lib": "mocha",
     "test-public": "karma start test/karma.conf.js",
     "lint": "eslint index.js {lib,test}/*.js",
-    "coverage": "nyc npm run test"
+    "coverage": "nyc --reporter=lcov --reporter=text npm run test"
   },
   "author": {
     "name": "Jan-Otto Kröpke",
