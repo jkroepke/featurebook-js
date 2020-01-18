@@ -154,7 +154,7 @@ class FeaturebookPdfGenerator {
     ));
 
     pdfTable.addBody(body).onPageAdded((tb) => {
-      //tb.addHeader();
+      tb.addHeader();
     });
 
     // https://github.com/voilab/voilab-pdf-table/issues/21#issuecomment-533665007

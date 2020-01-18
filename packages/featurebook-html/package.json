@@ -8,8 +8,8 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha test/lib/**/*.spec.js --recursive",
-    "lint": "eslint lib/*.js index.js",
+    "test": "mocha",
+    "lint": "eslint index.js {lib,test}/*.js",
     "coverage": "nyc npm run test"
   },
   "author": {

@@ -11,9 +11,9 @@
   "scripts": {
     "pretest": "bower install",
     "test": "npm run test-lib & npm run test-public",
-    "test-lib": "mocha test/lib/**/*.spec.js --recursive",
+    "test-lib": "mocha",
     "test-public": "karma start test/karma.conf.js",
-    "lint": "eslint lib/*.js index.js",
+    "lint": "eslint index.js {lib,test}/*.js",
     "coverage": "nyc npm run test"
   },
   "author": {

@@ -1,15 +1,14 @@
-
 const chai = require('chai');
-const featurebookHtml = require('../../lib/featurebook-html');
+const featurebookServe = require('../lib/featurebook-serve');
 
-const should = chai.should();
+chai.should();
 
-describe('featurebook-html', () => {
+describe('featurebook-serve', () => {
   describe('$imageRenderer', () => {
     let imageRenderer;
 
     beforeEach(() => {
-      imageRenderer = featurebookHtml.$imageRenderer;
+      imageRenderer = featurebookServe.$imageRenderer;
     });
 
     it('should not modify the src attribute given any URL', () => {
@@ -23,9 +22,9 @@ describe('featurebook-html', () => {
         .should.deep.equal({ src: 'images/smiley.gif' });
     });
 
-    it('should remove the schema prefix given a URL with the assert:// schema', () => {
-      imageRenderer({ src: 'asset://assets/images/smiley.gif' })
-        .should.deep.equal({ src: 'assets/images/smiley.gif' });
+    it('should prefix the src attribute with `api/rest/raw` given a URL with the assert:// schema', () => {
+      imageRenderer({ src: 'asset://images/smiley.gif' })
+        .should.deep.equal({ src: 'api/rest/raw/images/smiley.gif' });
     });
   });
 
@@ -33,7 +32,7 @@ describe('featurebook-html', () => {
     let linkRenderer;
 
     beforeEach(() => {
-      linkRenderer = featurebookHtml.$linkRenderer;
+      linkRenderer = featurebookServe.$linkRenderer;
     });
 
     it('should not modify the href attribute given any URL', () => {
@@ -47,9 +46,9 @@ describe('featurebook-html', () => {
         .should.deep.equal({ href: '/some/path/index.html' });
     });
 
-    it('should remove the schema prefix and add the .html suffix given a URL with the feature:// schema', () => {
+    it('should prefix the href attribute with `/#/viewer` given a URL with the feature:// schema', () => {
       linkRenderer({ href: 'feature://some/path/foo.feature' })
-        .should.deep.equal({ href: 'some/path/foo.feature.html' });
+        .should.deep.equal({ href: '/#/viewer/some/path/foo.feature' });
     });
   });
 });

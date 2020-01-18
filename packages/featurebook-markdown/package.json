@@ -8,8 +8,8 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha --recursive",
-    "lint": "eslint lib/*.js index.js"
+    "test": "mocha",
+    "lint": "eslint index.js {lib,test}/*.js"
   },
   "author": {
     "name": "Jan-Otto Kröpke",
