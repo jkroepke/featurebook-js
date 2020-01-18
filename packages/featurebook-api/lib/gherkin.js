@@ -1,4 +1,4 @@
-const gherkin = require('gherkin');
+const gherkin = require('gherkin').default;
 
 const getParsedGherkin = (featureFile, options) => new Promise((resolve, reject) => {
   const stream = gherkin.fromPaths([featureFile], options);
@@ -17,8 +17,11 @@ const getParsedGherkin = (featureFile, options) => new Promise((resolve, reject)
         ...data[data.length - 1],
         ...chunk.gherkinDocument,
       };
-    } else {
+    } else if (Object.prototype.hasOwnProperty.call(chunk, 'pickle')) {
       data[data.length - 1].pickles.push(chunk.pickle);
+    } else {
+      console.error('Unknown chunk');
+      console.error(chunk);
     }
   });
 
@@ -31,7 +34,7 @@ const parse = async (featureFile, options) => {
   const defaultOptions = {
     includeSource: true,
     includeGherkinDocument: true,
-    includePickles: true,
+    includePickles: false,
   };
 
   return getParsedGherkin(featureFile, {

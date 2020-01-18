@@ -26,7 +26,7 @@ const readMetadata = async (specDir) => {
   }
 };
 
-const readFeature = async (featureFile, options) => {
+const readFeatures = async (featureFile, options) => {
   try {
     return await gherkin.parse(featureFile, options);
   } catch (e) {
@@ -53,9 +53,9 @@ const readSummary = async (dir) => {
 };
 
 const getDisplayNameOverwrite = async (featureFile) => {
-  const feature = await readFeature(featureFile);
+  const features = await readFeatures(featureFile);
   const displayNameRegex = /#\s*featurebookDisplayName:\s*(.+)/;
-  const comments = feature.comments
+  const comments = features.comments
     .filter((comment) => displayNameRegex.test(comment.text))
     .map((comment) => comment.text);
 
@@ -134,6 +134,6 @@ module.exports = {
   getVersion,
   readSpecTree,
   readMetadata,
-  readFeature,
+  readFeatures,
   readSummary,
 };

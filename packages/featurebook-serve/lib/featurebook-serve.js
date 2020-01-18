@@ -26,7 +26,7 @@ const serve = async (specDir, port) => {
   app.use('/', express.static(path.join(__dirname, '..', 'public')));
 
   // serve static raw files from the specification source dir directory
-  app.use('/api/rest/raw', express.static(specDir, {
+  app.use('/api/rest/raw/', express.static(specDir, {
     index: false,
   }));
 
@@ -69,10 +69,10 @@ const serve = async (specDir, port) => {
     const responseBody = {};
 
     try {
-      const feature = await api.readFeature(path.join(specDir, req.params.path));
+      const features = await api.readFeatures(path.join(specDir, req.params.path));
 
       responseBody.status = 'success';
-      responseBody.data = await markdown.descriptionMarkdownToHTML(feature, markdownOptions);
+      responseBody.data = await markdown.descriptionMarkdownToHTML(features, markdownOptions);
     } catch (e) {
       responseBody.status = 'error';
       responseBody.message = `Unable to parse the feature file: ${e}`;
@@ -81,7 +81,9 @@ const serve = async (specDir, port) => {
     }
   });
 
-  app.use((err, req, res) => {
+  // eslint-disable-next-line no-unused-vars
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
     res.status(500).send({ error: err.message });
   });
 

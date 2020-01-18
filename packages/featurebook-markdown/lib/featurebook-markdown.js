@@ -2,6 +2,11 @@ const md = require('markdown-it')({
   html: true,
   linkify: true,
 });
+const fromEntries = require('object.fromentries');
+
+if (!Object.fromEntries) {
+  fromEntries.shim();
+}
 
 const render = (text, markdownOptions) => {
   if (markdownOptions && markdownOptions.linkRenderer) {
@@ -39,39 +44,32 @@ const render = (text, markdownOptions) => {
   return md.render(text);
 };
 
-const descriptionMarkdownToHTML = async (feature, options) => {
-  const renderedFeature = feature;
-
-  if (Object.prototype.hasOwnProperty.call(feature, 'description')) {
-    renderedFeature.description = render(feature.description, options);
-  }
-
-  if (
-    Object.prototype.hasOwnProperty.call(feature, 'background')
-    && Object.prototype.hasOwnProperty.call(feature.background, 'description')
-  ) {
-    renderedFeature.background = {
-      ...feature.background,
-      description: render(feature.background.description, options),
-    };
-  }
-
-  if (!Object.prototype.hasOwnProperty.call(feature, 'children')) {
-    return renderedFeature;
-  }
-
-  for (const scenarioDefinition of feature.children) {
-    if (Object.prototype.hasOwnProperty.call(scenarioDefinition, 'description')) {
-      scenarioDefinition.description = render(scenarioDefinition.description, options);
-    }
-    if (Object.prototype.hasOwnProperty.call(scenarioDefinition, 'examples')) {
-      for (const example of scenarioDefinition.examples) {
-        example.description = render(example.description, options);
+const descriptionMarkdownToHTML = async (features, options) => {
+  const searchAndRender = (spec) => {
+    const fn = (value, key) => {
+      if (key === 'description') {
+        return render(value, options);
       }
-    }
-  }
 
-  return renderedFeature;
+      if (typeof value === 'object') {
+        return searchAndRender(value);
+      }
+
+      return value;
+    };
+
+    if (Array.isArray(spec)) {
+      return spec.map(fn);
+    }
+
+    return Object.fromEntries(
+      Object.entries(spec).map(
+        ([k, v], i) => [k, fn(v, k, i)],
+      ),
+    );
+  };
+
+  return searchAndRender(features);
 };
 
 module.exports = {
