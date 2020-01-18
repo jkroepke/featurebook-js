@@ -4,6 +4,7 @@
 [![dependencies Status](https://david-dm.org/jkroepke/featurebook-js/status.svg?path=packages/featurebook-pdf)](https://david-dm.org/jkroepke/featurebook-js?path=packages/featurebook-pdf)
 [![Code Climate](https://codeclimate.com/github/jkroepke/featurebook-js-pdf/badges/gpa.svg)](https://codeclimate.com/github/jkroepke/featurebook-js-pdf)
 [![Test Coverage](https://codeclimate.com/github/jkroepke/featurebook-js-pdf/badges/coverage.svg)](https://codeclimate.com/github/jkroepke/featurebook-js-pdf/coverage)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 # featurebook-pdf
 

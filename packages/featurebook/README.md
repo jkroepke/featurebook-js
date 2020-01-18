@@ -7,6 +7,7 @@ FeatureBook
 [![dependencies Status](https://david-dm.org/jkroepke/featurebook-js/status.svg?path=packages/featurebook)](https://david-dm.org/jkroepke/featurebook-js?path=packages/featurebook)
 [![Code Climate](https://codeclimate.com/github/jkroepke/featurebook-js/badges/gpa.svg)](https://codeclimate.com/github/jkroepke/featurebook-js)
 [![Test Coverage](https://codeclimate.com/github/jkroepke/featurebook-js/badges/coverage.svg)](https://codeclimate.com/github/jkroepke/featurebook-js/coverage)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 * [Introduction](#introduction)
 * [Rationale](#rationale)
