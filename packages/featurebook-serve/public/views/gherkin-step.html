@@ -3,7 +3,16 @@
     <div class="featurebook-step-name">
         <span ng-bind-html="step.text | highlightGherkinVariables"></span>
 
-        <pre ng-if="hasDocString()" class="featurebook-doc-string">{{step.argument.content}}</pre>
-        <gherkin-data-table ng-if="hasDataTable()" table-body="step.argument.rows"></gherkin-data-table>
+        <pre ng-if="step.docString" class="featurebook-doc-string">{{step.docString.content}}</pre>
+        <div ng-if="step.dataTable" class="table-responsive">
+            <table class="data-table">
+                <tr>
+                    <th ng-repeat="cell in step.dataTable.rows[0].cells track by $index">{{cell.value}}</th>
+                </tr>
+                <tr ng-repeat="row in step.dataTable.rows track by $index" ng-if="$index != 0">
+                    <td ng-repeat="cell in row.cells" ng-bind-html="cell.value | highlightGherkinVariables"></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

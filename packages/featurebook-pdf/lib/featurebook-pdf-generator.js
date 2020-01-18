@@ -3,6 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const api = require('@jkroepke/featurebook-api');
 const PDFDocument = require('pdfkit');
+const commonmark = require('commonmark');
+const CommonmarkPDFRenderer = require('pdfkit-commonmark').default;
+const PdfTable = require('voilab-pdf-table');
 
 const fontSize = {
   xxLarge: 18,
@@ -18,6 +21,9 @@ class FeaturebookPdfGenerator {
   constructor(specDir) {
     this.doc = new PDFDocument();
     this.specDir = specDir;
+
+    this.commonmarkReader = new commonmark.Parser();
+    this.commonmarkPdfWriter = new CommonmarkPDFRenderer();
   }
 
   end() {
@@ -47,6 +53,7 @@ class FeaturebookPdfGenerator {
     if (node.type === 'file') {
       await this.printFeature(node);
     }
+
     if (node.type === 'directory') {
       await this.printDirectory(node);
       for (const child of node.children) {
@@ -58,27 +65,31 @@ class FeaturebookPdfGenerator {
 
   async printFeature(node) {
     try {
-      const feature = await api.readFeature(path.join(this.specDir, node.path));
+      const features = await api.readFeatures(path.join(this.specDir, node.path));
 
-      this.doc.moveDown()
-        .fontSize(fontSize.xLarge)
-        .fillColor('red')
-        .text(`${feature.keyword}:`, { continued: true })
-        .fillColor('black')
-        .text(` ${feature.name}`);
+      for (const feature of features) {
+        this.doc.moveDown()
+          .fontSize(fontSize.xLarge)
+          .fillColor('red')
+          .text(`${feature.feature.keyword}:`, { continued: true })
+          .fillColor('black')
+          .text(` ${feature.feature.name}`);
 
-      if (feature.description) {
-        this.doc.fontSize(fontSize.inherit)
-          .fillColor('gray');
+        if (feature.feature.description) {
+          this.doc.fontSize(fontSize.inherit)
+            .fillColor('gray');
 
-        this.printMarkdown(feature.description);
-      }
+          this.printMarkdown(feature.feature.description);
+        }
 
-      this.printBackground(feature.background);
-
-      for (const scenario of feature.scenarioDefinitions) {
-        // eslint-disable-next-line no-await-in-loop
-        await this.printScenarioDefinition(scenario);
+        for (const children of feature.feature.children) {
+          if (children.background) {
+            this.printBackground(children.background);
+          } else if (children.scenario) {
+            // eslint-disable-next-line no-await-in-loop
+            await this.printScenarioDefinition(children.scenario);
+          }
+        }
       }
     } catch (err) {
       console.warn(color.red('Error printing feature `%s`: %s'), node.path, err);
@@ -111,31 +122,43 @@ class FeaturebookPdfGenerator {
     }
   }
 
-  printDocStringArgument(step) {
-    if (step.argument && step.argument.type === 'DocString') {
-      this.doc.fillColor('green')
-        .text(step.argument.content);
+  printTable(tableHeader, tableBody) {
+    const { x } = this.doc;
+
+    this.doc.x += 40;
+
+    const width = tableHeader.cells.map((value, index) => Math.max(
+      value.value.length,
+      ...tableBody.map((tableRow) => tableRow.cells[index].value.length),
+    ));
+
+    const pdfTable = new PdfTable(this.doc);
+
+    pdfTable.setColumnsDefaults({
+      align: 'left',
+    });
+
+    for (const [i, header] of tableHeader.cells.entries()) {
+      pdfTable
+        .addColumns([{
+          id: header.value.toLowerCase(),
+          header: header.value,
+          width: Math.max(width[i], 5) * 7,
+        }]);
     }
-  }
 
-  printTableRow(tableHeader) {
-    this.doc.fontSize(fontSize.inherit)
-      .fillColor('blue')
-      .text(`| ${tableHeader.cells.map((cell) => cell.value).join(' | ')} |`);
-  }
+    const body = tableBody.map((bodyRow) => (
+      bodyRow.cells.reduce((result, value, index) => (
+        { ...result, [tableHeader.cells[index].value.toLowerCase()]: value.value }
+      ), {})
+    ));
 
-  printTableHeader(tableHeader) {
-    this.printTableRow(tableHeader);
-  }
+    pdfTable.addBody(body).onPageAdded((tb) => {
+      //tb.addHeader();
+    });
 
-  printTableData(tableData) {
-    tableData.forEach(this.printTableRow);
-  }
-
-  printDataTableArgument(step) {
-    if (step.argument && step.argument.type === 'DataTable') {
-      this.printTableData(step.argument.rows);
-    }
+    // https://github.com/voilab/voilab-pdf-table/issues/21#issuecomment-533665007
+    this.doc.x = x;
   }
 
   printStep(step) {
@@ -144,8 +167,18 @@ class FeaturebookPdfGenerator {
       .text(step.keyword, { continued: true })
       .fillColor('black')
       .text(step.text);
-    this.printDocStringArgument(step);
-    this.printDataTableArgument(step);
+
+    if (step.docString) {
+      this.doc.fillColor('green')
+        .text(step.docString.content);
+    }
+
+    if (step.dataTable) {
+      const tableHeader = step.dataTable.rows.shift();
+      const tableBody = step.dataTable.rows;
+
+      this.printTable(tableHeader, tableBody);
+    }
   }
 
   printTitle(metadata) {
@@ -169,7 +202,7 @@ class FeaturebookPdfGenerator {
 
   printMarkdown(text) {
     // TODO Actually parse the markdown text and print it.
-    this.doc.text(text);
+    this.commonmarkPdfWriter.render(this.doc, this.commonmarkReader.parse(text));
   }
 
   async printDirectory(node) {
@@ -188,21 +221,21 @@ class FeaturebookPdfGenerator {
   }
 
   printBackground(background) {
-    if (background) {
-      this.doc.moveDown()
-        .fontSize(fontSize.larger)
-        .fillColor('red')
-        .text(`${background.keyword}:`, { continued: true })
-        .fillColor('black')
-        .text(` ${background.name}`);
+    this.doc.moveDown()
+      .fontSize(fontSize.larger)
+      .fillColor('red')
+      .text(`${background.keyword}:`, { continued: true })
+      .fillColor('black')
+      .text(` ${background.name}`);
 
-      if (background.description) {
-        this.doc.fontSize(fontSize.inherit)
-          .fillColor('gray');
-        this.printMarkdown(background.description);
-      }
+    if (background.description) {
+      this.doc.fontSize(fontSize.inherit)
+        .fillColor('gray');
+      this.printMarkdown(background.description);
+    }
 
-      background.steps.forEach(this.printStep);
+    for (const step of background.steps) {
+      this.printStep(step);
     }
   }
 
@@ -220,8 +253,7 @@ class FeaturebookPdfGenerator {
       this.printMarkdown(example.description);
     }
 
-    this.printTableHeader(example.tableHeader);
-    this.printTableData(example.tableBody);
+    this.printTable(example.tableHeader, example.tableBody);
   }
 }
 

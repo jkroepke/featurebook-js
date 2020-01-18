@@ -13,8 +13,12 @@
              ng-if="example.description"
              ng-bind-html="example.description"></div>
 
-        <gherkin-data-table class="featurebook-indent-1x"
-                            table-header="example.tableHeader"
-                            table-body="example.tableBody"></gherkin-data-table>
+        <div class="table-responsive">
+            <table class="data-table">
+                <tr ng-repeat="row in example.tableBody">
+                    <td ng-repeat="cell in row.cells" ng-bind-html="cell.value | highlightGherkinVariables"></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

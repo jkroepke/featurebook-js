@@ -52,7 +52,7 @@ const html = async (specDir, outputDir) => {
       const featurePath = path.join(specDir, node.path);
       const nextPathPrefix = pathPrefix || './';
       try {
-        const features = await api.readFeature(featurePath);
+        const features = await api.readFeatures(featurePath);
         const results = [];
         const renderedFeatures = [];
 

@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "mocha --recursive",
-    "lint": "eslint src/*.js index.js"
+    "lint": "eslint lib/*.js index.js"
   },
   "author": {
     "name": "Jan-Otto Kröpke",

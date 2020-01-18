@@ -12,8 +12,8 @@
       replace: true,
       scope: {
         tableHeader: '=',
-        tableBody: '='
-      }
+        tableBody: '=',
+      },
     };
   }
 

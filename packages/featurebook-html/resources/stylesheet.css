@@ -1,15 +1,9 @@
-html {
-  height: 100%;
-}
-
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background: #23232E;
+  font-family: Arial Narrow, Arial, Helvetica, sans-serif;
   font-size: 16px;
-  color: #333;
-  line-height: 1.5;
-  padding: 0;
-  display: contents;
-  height: 100%;
+  color: #7BA1AD;
+  margin: 20px;
 }
 
 table {
@@ -18,211 +12,132 @@ table {
 
 img {
   max-width: 100%;
-  max-height: 100%;
-  padding: 15px;
-  align-content: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.featurebook-icon {
-  position: fixed;
-  background: #ffffff;
-  float: left;
-  width: 25%;
-  height: 100px;
-  align-content: center;
-  padding: 1em 0 1em 0;
-}
-
-.featurebook-icon h1 {
-  font-size: 20px;
-  text-align: center;
-  color: #324e86;
-}
-
-.featurebook-navigation {
-  position: fixed;
-  background: #fff;
-  float: left;
-  width: 25%;
-  height: 100%;
-  margin-top: 100px;
 }
 
 .featurebook-container {
-  height: 100%;
+
 }
 
 .featurebook-metadata {
-  display: flex;
 }
 
 .featurebook-title {
   font-size: xx-large;
   font-weight: bolder;
-  margin-left: 10px;
+  color: #ffffff;
 }
 
 .featurebook-title a {
-  color: inherit;
+  color: white;
   text-decoration: none;
 }
 
 .featurebook-authors a {
-  color: #cc7832;
+  color: #CC7832;
 }
 
 .featurebook-contributors a {
-  color: #bbb529;
+  color: #BBB529;
 }
 
 .featurebook-spec-tree {
-  background: #fff;
+  background: #373743;
   float: left;
-  height: 100%;
+  width: 25%;
 }
 
 .featurebook-spec-tree a:hover {
-  color: #5c5c5c;
+  color: #CC7832;
 }
 
 .featurebook-spec-tree ul {
-  padding: 0 0 0 1em;
-  list-style: none;
+  padding-left: 2em;
 }
 
 .featurebook-spec-tree-file {
-  font-size: 13px;
-  color: #324e86;
+  color: white;
   text-decoration: none;
-  margin: 5px;
 }
 
 .featurebook-spec-tree-directory {
-  font-size: 14px;
-  color: #324e86;
+  color: #7BA1AD;
   text-decoration: none;
-  margin: 5px;
 }
 
 .active {
   font-weight: bold;
-  color: red;
+  color: #BBB529;
 }
 
 .featurebook-main {
+  background: #373743;
   float: right;
   width: 73%;
-  margin-top: 20px;
-}
-
-.featurebook-main img {
-  width: 60%;
-  height: 60%;
-  padding: 10px;
-}
-
-.featurebook-main code {
-  display: block;
-  white-space: pre-wrap;
 }
 
 .featurebook-tag {
   display: inline-block;
   margin-right: 0.5em;
-  color: #e16a6a;
+  color: #BBB529;
 }
 
 .featurebook-feature-name {
   font-size: x-large;
+  color: #ffffff;
 }
 
-.featurebook-feature-description {
+.featurebook-background, .featurebook-scenario-definition, .featurebook-examples {
   margin-top: 20px;
   margin-left: 20px;
-  margin-right: 20px;
-}
-
-.featurebook-examples {
-  margin-top: 20px;
-  margin-left: 20px;
-}
-
-.featurebook-background {
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-.featurebook-scenario-definition {
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  background: #ddd;
-  padding: 10px;
 }
 
 .featurebook-step {
+
 }
 
 .featurebook-step-keyword {
-  color: #01c0d8;
+  color: #CC7832;
   font-weight: normal;
   display: inline-block;
   text-align: right;
   margin-right: 0;
-  margin-left: 20px;
+  width: 5em;
   vertical-align: top;
 }
 
 .featurebook-step-text {
+  display: inline-block;
   padding-left: 0.5em;
 }
 
 .featurebook-doc-string {
-  color: #6a8759;
+  color: #6A8759;
 }
 
-.featurebook-background-name,
-.featurebook-scenario-definition-name,
-.featurebook-examples-name {
+.featurebook-background-name, .featurebook-scenario-definition-name, .featurebook-examples-name {
   font-size: large;
   margin-bottom: 0.5em;
-}
-
-.featurebook-examples table,
-.featurebook-step table {
-  border: 1px #000000;
-}
-
-.featurebook-examples tr:nth-child(even),
-.featurebook-step tr:nth-child(even) {
-  background-color: #bbbbbb;
-  color: #000;
-}
-.featurebook-examples tr:nth-child(odd),
-.featurebook-step tr:nth-child(odd) {
-  background-color: #cccccc;
-  color: #000;
-}
-
-.featurebook-examples td,
-.featurebook-step td {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-}
-
-.featurebook-examples th,
-.featurebook-step th {
-  font-weight: bold;
-  background-color: #000;
   color: #ffffff;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
 }
 
-.featurebook-data-table {
-  margin: 10px 20px 5px 50px;
+.featurebook-examples tr, .featurebook-step tr {
+  border-left: 2px dotted #CC7832;
+}
+
+.featurebook-examples td, .featurebook-step td {
+  border-right: 2px dotted #CC7832;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.featurebook-examples th, .featurebook-step th {
+  border-right: 2px dotted #CC7832;
+  font-weight: normal;
+  color: #9876AA;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.featurebook-step .featurebook-data-table {
+  margin-left: 90px;
 }

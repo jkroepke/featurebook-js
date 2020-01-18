@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "mocha test/lib/**/*.spec.js --recursive",
-    "lint": "eslint index.js src/*.js",
+    "lint": "eslint index.js lib/*.js",
     "coverage": "nyc npm run test"
   },
   "author": {

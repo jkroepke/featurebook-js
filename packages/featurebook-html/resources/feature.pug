@@ -2,14 +2,15 @@ mixin printStep(step)
   div.featurebook-step
     span.featurebook-step-keyword= step.keyword
     span.featurebook-step-text= step.text
-      if step.argument && step.argument.type == 'DataTable'
-        table.featurebook-data-table
-          each row in step.argument.rows
-            tr
-              each cell in row.cells
-                td= cell.value
-      if step.argument && step.argument.type == 'DocString'
-        pre.featurebook-doc-string= step.argument.content
+    if step.dataTable
+      table.featurebook-data-table
+        each row in step.dataTable.rows
+          tr
+            each cell in row.cells
+              td= cell.value
+
+    if step.docString
+      pre.featurebook-doc-string= step.docString.content
 
 doctype html
 html

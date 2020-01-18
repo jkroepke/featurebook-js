@@ -13,7 +13,7 @@
     "test": "npm run test-lib & npm run test-public",
     "test-lib": "mocha test/lib/**/*.spec.js --recursive",
     "test-public": "karma start test/karma.conf.js",
-    "lint": "eslint src/*.js index.js",
+    "lint": "eslint lib/*.js index.js",
     "coverage": "nyc npm run test"
   },
   "author": {
