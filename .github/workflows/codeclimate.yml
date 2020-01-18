@@ -1,4 +1,4 @@
-name: CI featurebook-api
+name: CI featurebook
 
 on:
   pull_request:
@@ -21,10 +21,12 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm ci
+      - run: npx lerna bootstrap
+      - name: code climate
         working-directory: packages/featurebook-api
-      - run: npm run lint
-        working-directory: packages/featurebook-api
-      - run: npm run test
-        working-directory: packages/featurebook-api
-      - run: npm run coverage
-        working-directory: packages/featurebook-api
+        uses: paambaati/codeclimate-action@v2.4.0
+        env:
+          CC_TEST_REPORTER_ID: 18908f02e2f04c41f84ac447800fdca9a1fae3a15ba319228a4484408d827111
+        with:
+          coverageCommand: npx lerna run coverage
+          debug: true
