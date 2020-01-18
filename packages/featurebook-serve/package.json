@@ -13,7 +13,6 @@
     "test": "npm run test-lib & npm run test-public",
     "test-lib": "mocha",
     "test-public": "karma start test/karma.conf.js",
-    "lint": "eslint index.js {lib,test}/*.js",
     "coverage": "nyc --reporter=lcov --reporter=text npm run test"
   },
   "author": {
@@ -46,9 +45,6 @@
   "devDependencies": {
     "bower": "^1.8.8",
     "chai": "^4.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.20.0",
     "jasmine-core": "^3.4.0",
     "karma": "^4.1.0",
     "karma-coverage": "^2.0.1",

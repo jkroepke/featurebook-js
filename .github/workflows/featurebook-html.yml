@@ -22,7 +22,5 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm ci
         working-directory: packages/featurebook-html
-      - run: npm run lint
-        working-directory: packages/featurebook-html
       - run: npm run test
         working-directory: packages/featurebook-html
