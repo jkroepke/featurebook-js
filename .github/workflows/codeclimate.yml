@@ -19,10 +19,10 @@ jobs:
       - run: npx lerna bootstrap
       - run: npx lerna run coverage
       - run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          curl -fsSL https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           for f in packages/*; do
-            if [ -d $f ]; then
+            if [ -f $f/coverage/lcov.info ]; then
               echo $f;
               ./cc-test-reporter format-coverage -t lcov -o coverage/coverage.${f//\//-}.json $f/coverage/lcov.info;
             fi
