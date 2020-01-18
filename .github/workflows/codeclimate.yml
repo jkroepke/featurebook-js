@@ -33,7 +33,7 @@ jobs:
           for f in packages/*; do
             if [ -f $f/coverage/lcov.info ]; then
               cd "$f";
-              ../../cc-test-reporter format-coverage -t lcov -o "../../coverage/coverage.${f//\//-}.json" -p "$PWD" "$f/coverage/lcov.info";
+              ../../cc-test-reporter format-coverage -t lcov -o "../../coverage/coverage.${f//\//-}.json" -p "$PWD" "coverage/lcov.info";
               cd "../.."
             fi
           done;
