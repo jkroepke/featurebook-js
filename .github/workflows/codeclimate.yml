@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Setup cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Setup node
         uses: actions/setup-node@v1
         with:
@@ -18,7 +25,9 @@ jobs:
       - run: npm ci
       - run: npx lerna bootstrap
       - run: npx lerna run coverage
-      - run: |
+      - name: codeclimate
+        run: |
+          set -x
           curl -fsSL https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           for f in packages/*; do
