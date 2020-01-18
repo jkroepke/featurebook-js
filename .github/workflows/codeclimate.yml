@@ -1,4 +1,4 @@
-name: CI featurebook-js (code climate)
+name: CI featurebook-js
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - master
 
 jobs:
-  node:
+  coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 12
       - run: npm ci
-      - run: npm bootstrap
+      - run: npx lerna bootstrap
       - run: npx lerna run coverage
       - run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
