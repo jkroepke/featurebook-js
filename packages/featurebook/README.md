@@ -65,7 +65,7 @@ Before installing FeatureBook, you will need the following:
 FeatureBook can be installed (or updated if it's already installed) from npm:
 
 ```shell
-$ npm install -g featurebook
+$ npm install -g @jkroepke/featurebook
 ```
 
 You can serve the current directory as a system specification:

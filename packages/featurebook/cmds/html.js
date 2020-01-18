@@ -10,7 +10,12 @@ exports.builder = (yargs) => yargs.options({
     alias: 'output-dir',
     default: path.join(process.cwd(), 'dist'),
   },
-});
+})
+  .positional('spec-dir', {
+    describe: 'path to feature files',
+    type: 'string',
+    default: process.cwd(),
+  });
 
 exports.handler = async (argv) => {
   const outputDir = argv.o;

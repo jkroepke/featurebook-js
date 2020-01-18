@@ -14,7 +14,12 @@ exports.builder = (yargs) => yargs.options({
     number: true,
     default: 3000,
   },
-});
+})
+  .positional('spec-dir', {
+    describe: 'path to feature files',
+    type: 'string',
+    default: process.cwd(),
+  });
 
 exports.handler = async (argv) => {
   const port = argv.p;
