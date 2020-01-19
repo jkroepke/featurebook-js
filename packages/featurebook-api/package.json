@@ -43,7 +43,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jkroepke/featurebook-js.git"
+    "url": "github:jkroepke/featurebook-js",
+    "directory": "packages/featurebook-api"
   },
   "engines": {
     "node": ">= 8"
