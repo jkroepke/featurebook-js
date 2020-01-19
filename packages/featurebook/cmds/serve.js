@@ -2,7 +2,6 @@ const os = require('os');
 const dns = require('dns');
 const color = require('colors/safe');
 const opener = require('opener');
-const featurebookServe = require('@jkroepke/featurebook-serve');
 
 exports.command = 'serve [spec-dir]';
 exports.desc = 'serve <spec-dir> as a system specification';
@@ -22,6 +21,14 @@ exports.builder = (yargs) => yargs.options({
   });
 
 exports.handler = async (argv) => {
+  if (!require.resolve('@jkroepke/featurebook-serve')) {
+    console.error("Can't load module '@jkroepke/featurebook-serve'. Did you run 'npm i -S @jkroepke/featurebook-serve'?");
+    process.exit(1);
+  }
+
+  // eslint-disable-next-line global-require
+  const featurebookServe = require('@jkroepke/featurebook-serve');
+
   const port = argv.p;
   const { specDir } = argv;
 

@@ -1,5 +1,4 @@
 const path = require('path');
-const featurebookPdf = require('@jkroepke/featurebook-pdf');
 
 exports.command = 'pdf [spec-dir]';
 exports.desc = 'build the specification PDF document';
@@ -18,7 +17,15 @@ exports.builder = (yargs) => yargs.options({
   });
 
 exports.handler = async (argv) => {
+  if (!require.resolve('@jkroepke/featurebook-pdf')) {
+    console.error("Can't load module '@jkroepke/featurebook-pdf'. Did you run 'npm i -S @jkroepke/featurebook-pdf'?");
+    process.exit(1);
+  }
+
+  // eslint-disable-next-line global-require
+  const featurebookPdf = require('@jkroepke/featurebook-pdf');
+
   const outputDir = argv.o;
   const { specDir } = argv;
-  featurebookPdf(specDir || process.cwd(), outputDir);
+  await featurebookPdf(specDir || process.cwd(), outputDir);
 };
