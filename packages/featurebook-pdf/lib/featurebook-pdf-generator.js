@@ -2,51 +2,90 @@ const color = require('colors/safe');
 const fs = require('fs');
 const path = require('path');
 const api = require('@jkroepke/featurebook-api');
-const PDFDocument = require('pdfkit');
-const commonmark = require('commonmark');
-const CommonmarkPDFRenderer = require('pdfkit-commonmark').default;
-const PdfTable = require('voilab-pdf-table');
-
-const fontSize = {
-  xxLarge: 18,
-  xLarge: 16,
-  larger: 14,
-  inherit: 12,
-  smaller: 10,
-  xSmall: 8,
-  xxSmall: 6,
-};
+const PdfPrinter = require('pdfmake');
+const markdown2pdfmake = require('markdown2pdfmake');
 
 class FeaturebookPdfGenerator {
-  constructor(specDir) {
-    this.doc = new PDFDocument();
+  constructor(specDir, fonts) {
     this.specDir = specDir;
-
-    this.commonmarkReader = new commonmark.Parser();
-    this.commonmarkPdfWriter = new CommonmarkPDFRenderer();
+    this.printer = new PdfPrinter(fonts);
   }
 
-  end() {
-    this.doc.end();
+  setDocumentDefinition(styles = {}) {
+    this.docDefinition = {
+      defaultStyle: {
+        font: 'Anaheim',
+        fontSize: 12,
+      },
+      pageSize: 'A4',
+      info: {},
+      styles: {
+        header1: { fontSize: 24, bold: true, marginBottom: 5 },
+        header2: { fontSize: 20, bold: true, marginBottom: 5 },
+        header3: { fontSize: 18, bold: true, marginBottom: 5 },
+        ...styles,
+      },
+      content: [],
+      footer: [
+        {
+          table: {
+            widths: [500],
+            headerRows: 1,
+            body: [[{ text: '', border: [false, true, false, false] }]],
+          },
+          layout: {
+            hLineWidth: () => 1,
+          },
+          margin: [40, 10, 0, 0],
+        },
+        {
+          text: (new Date()).toLocaleDateString(),
+          margin: [40, 0, 40, 0],
+          style: 'smallText',
+        },
+        {
+          text: '',
+          margin: [0, 5, 40, 0],
+          alignment: 'right',
+          style: 'smallText',
+          bold: true,
+        },
+      ],
+    };
   }
 
   setMetadata(metadata) {
-    this.doc.info.Title = metadata.title ? metadata.title : 'Untitled';
+    this.docDefinition.info.Title = metadata.title ? metadata.title : 'Untitled';
+    this.docDefinition.footer[2].text = metadata.title ? metadata.title : 'Untitled';
+
     if (Object.prototype.hasOwnProperty.call(metadata, 'authors')) {
-      this.doc.info.Author = metadata.authors.map((author) => `${author.firstName} ${author.lastName}`).join(', ');
+      this.docDefinition.info.Author = metadata.authors.map(FeaturebookPdfGenerator.formatName).join(', ');
     }
 
     this.printTitle(metadata);
-    this.printAuthors(metadata);
-    this.printContributors(metadata);
+
+    if (Object.prototype.hasOwnProperty.call(metadata, 'authors')) {
+      this.printHumans(metadata.authors);
+    }
+
+    if (Object.prototype.hasOwnProperty.call(metadata, 'contributors')) {
+      this.printHumans(metadata.contributors);
+    }
   }
 
-  setOutput(file) {
-    this.doc.pipe(fs.createWriteStream(file));
+  generate(file) {
+    const pdfDoc = this.printer.createPdfKitDocument(this.docDefinition);
+    pdfDoc.pipe(fs.createWriteStream(file));
+    pdfDoc.end();
   }
 
-  setFont(file) {
-    this.doc.font(file);
+  printIndex() {
+    this.docDefinition.content.push({
+      toc: {
+        title: { text: 'Table of content', style: 'header2' },
+        numberStyle: { bold: true },
+      },
+    });
   }
 
   async printNode(node) {
@@ -68,17 +107,15 @@ class FeaturebookPdfGenerator {
       const features = await api.readFeatures(path.join(this.specDir, node.path));
 
       for (const feature of features) {
-        this.doc.moveDown()
-          .fontSize(fontSize.xLarge)
-          .fillColor('red')
-          .text(`${feature.feature.keyword}:`, { continued: true })
-          .fillColor('black')
-          .text(` ${feature.feature.name}`);
+        this.docDefinition.content.push({
+          text: [
+            { text: `${feature.feature.keyword.trim()}:`, color: 'red', fontSize: 16 },
+            { text: ` ${feature.feature.name}`, fontSize: 16 },
+          ],
+          margin: [0, 10, 0, 5],
+        });
 
         if (feature.feature.description) {
-          this.doc.fontSize(fontSize.inherit)
-            .fillColor('gray');
-
           this.printMarkdown(feature.feature.description);
         }
 
@@ -97,20 +134,17 @@ class FeaturebookPdfGenerator {
   }
 
   async printScenarioDefinition(scenario) {
-    this.doc.moveDown()
-      .fontSize(fontSize.larger)
-      .fillColor('red')
-      .text(`${scenario.keyword}:`, { continued: true })
-      .fillColor('black')
-      .text(` ${scenario.name}`);
+    this.docDefinition.content.push({
+      text: [
+        { text: `${scenario.keyword.trim()}:`, color: 'red', fontSize: 14 },
+        { text: ` ${scenario.name}`, fontSize: 14 },
+      ],
+      margin: [0, 10, 0, 5],
+    });
 
     if (scenario.description) {
-      this.doc.fontSize(fontSize.inherit)
-        .fillColor('gray');
       this.printMarkdown(scenario.description);
     }
-
-    this.doc.moveDown(0.5);
 
     for (const step of scenario.steps) {
       // eslint-disable-next-line no-await-in-loop
@@ -123,54 +157,39 @@ class FeaturebookPdfGenerator {
   }
 
   printTable(tableHeader, tableBody) {
-    const { x } = this.doc;
+    const body = [
+      tableHeader.cells.map((cell) => cell.value),
+      ...tableBody.map((bodyRow) => (
+        bodyRow.cells.map((cell) => cell.value)
+      )),
+    ].filter(Boolean);
 
-    this.doc.x += 40;
-
-    const width = tableHeader.cells.map((value, index) => Math.max(
-      value.value.length,
-      ...tableBody.map((tableRow) => tableRow.cells[index].value.length),
-    ));
-
-    const pdfTable = new PdfTable(this.doc);
-
-    pdfTable.setColumnsDefaults({
-      align: 'left',
-    });
-
-    for (const [i, header] of tableHeader.cells.entries()) {
-      pdfTable
-        .addColumns([{
-          id: header.value.toLowerCase(),
-          header: header.value,
-          width: Math.max(width[i], 5) * 7,
-        }]);
-    }
-
-    const body = tableBody.map((bodyRow) => (
-      bodyRow.cells.reduce((result, value, index) => (
-        { ...result, [tableHeader.cells[index].value.toLowerCase()]: value.value }
-      ), {})
-    ));
-
-    pdfTable.addBody(body).onPageAdded((tb) => {
-      tb.addHeader();
-    });
-
-    // https://github.com/voilab/voilab-pdf-table/issues/21#issuecomment-533665007
-    this.doc.x = x;
+    this.docDefinition.content.push(
+      {
+        margin: [0, 10],
+        table: {
+          dontBreakRows: false,
+          keepWithHeaderRows: 1,
+          headerRows: 1,
+          widths: Array(tableHeader.cells.length).fill('auto'),
+          body,
+        },
+      },
+    );
   }
 
   printStep(step) {
-    this.doc.fontSize(fontSize.inherit)
-      .fillColor('red')
-      .text(step.keyword, { continued: true })
-      .fillColor('black')
-      .text(step.text);
+    this.docDefinition.content.push({
+      text: [
+        { text: `${step.keyword.trim()}:`, color: 'red' },
+        { text: ` ${step.text}` },
+      ],
+    });
 
     if (step.docString) {
-      this.doc.fillColor('green')
-        .text(step.docString.content);
+      this.docDefinition.content.push({
+        text: step.docString.content, color: 'green',
+      });
     }
 
     if (step.dataTable) {
@@ -182,55 +201,78 @@ class FeaturebookPdfGenerator {
   }
 
   printTitle(metadata) {
-    this.doc.fontSize(32)
-      .text(`${metadata.title} ${metadata.version || ''}`);
+    this.docDefinition.content.push({
+      text: `${metadata.title} ${metadata.version || ''}`,
+      style: 'header1',
+    });
   }
 
-  printAuthors(metadata) {
-    if (Object.prototype.hasOwnProperty.call(metadata, 'authors')) {
-      this.doc.fontSize(fontSize.larger)
-        .text(metadata.authors.map((author) => `${author.firstName} ${author.lastName}`));
+  printHumans(humans) {
+    this.docDefinition.content.push({
+      text: humans.map((name) => `${name.firstName} ${name.lastName}`).join(', '),
+    });
+  }
+
+  printMarkdown(markdown, options = {}) {
+    const markdownImage = /(!\[.+]\([^)]+\))/g;
+
+    const parts = markdown
+      .split(markdownImage).map((e) => e.trim()).filter(Boolean);
+
+    for (const markdownPart of parts) {
+      const body = markdownPart.match(markdownImage)
+        ? [[{
+          image: markdownPart
+            .replace(/!\[.+]\(([^)]+)\)/, '$1')
+            .replace('asset://', path.join(process.cwd(), this.specDir, '/')),
+          maxWidth: 505,
+        }]]
+        : markdown2pdfmake(markdownPart).map((paragraph) => ([{ ...paragraph, ...options }]));
+
+      this.docDefinition.content.push({
+        table: {
+          headerRows: 0,
+          widths: ['*'],
+          body: [...body],
+        },
+        layout: {
+          defaultBorder: false,
+          fillColor: '#ddd',
+        },
+      });
     }
-  }
-
-  printContributors(metadata) {
-    if (Object.prototype.hasOwnProperty.call(metadata, 'contributors')) {
-      this.doc.fontSize(fontSize.larger)
-        .text(metadata.contributors.map((contributor) => `${contributor.firstName} ${contributor.lastName}`));
-    }
-  }
-
-  printMarkdown(text) {
-    // TODO Actually parse the markdown text and print it.
-    this.commonmarkPdfWriter.render(this.doc, this.commonmarkReader.parse(text));
   }
 
   async printDirectory(node) {
-    this.doc.addPage()
-      .fontSize(fontSize.xxLarge)
-      .fillColor('black')
-      .text(node.displayName, { underline: true });
+    const nodePath = node.path.split('/');
+    const headerLevel = nodePath.length;
+
+    this.docDefinition.content.push({
+      text: node.displayName,
+      style: `header${headerLevel}`,
+      margin: [0, 20, 0, 10],
+      pageBreak: 'before',
+      tocItem: true,
+      tocStyle: headerLevel === 1 ? { fontSize: 14 } : { fontSize: 12 },
+      tocMargin: headerLevel === 1 ? [0, 10, 0, 0] : 0,
+    });
 
     const summary = await api.readSummary(path.join(this.specDir, node.path));
     if (summary) {
-      this.doc.moveDown(0.5);
-      this.doc.fontSize(fontSize.inherit)
-        .fillColor('gray');
       this.printMarkdown(summary);
     }
   }
 
   printBackground(background) {
-    this.doc.moveDown()
-      .fontSize(fontSize.larger)
-      .fillColor('red')
-      .text(`${background.keyword}:`, { continued: true })
-      .fillColor('black')
-      .text(` ${background.name}`);
+    this.docDefinition.content.push({
+      text: [
+        { text: `${background.keyword.trim()}:`, color: 'red', fontSize: 14 },
+        { text: ` ${background.name}`, fontSize: 14 },
+      ],
+      margin: [0, 10, 0, 5],
+    });
 
     if (background.description) {
-      this.doc.fontSize(fontSize.inherit)
-        .fillColor('gray');
       this.printMarkdown(background.description);
     }
 
@@ -240,16 +282,15 @@ class FeaturebookPdfGenerator {
   }
 
   printExample(example) {
-    this.doc.moveDown(0.5);
-    this.doc.fontSize(fontSize.larger)
-      .fillColor('red')
-      .text(`${example.keyword}:`, { continued: true })
-      .fillColor('black')
-      .text(` ${example.name}`);
+    this.docDefinition.content.push({
+      text: [
+        { text: `${example.keyword.trim()}:`, color: 'red', fontSize: 14 },
+        { text: ` ${example.name}`, fontSize: 14 },
+      ],
+      margin: [0, 10, 0, 5],
+    });
 
     if (example.description) {
-      this.doc.fontSize(fontSize.inherit)
-        .fillColor('gray');
       this.printMarkdown(example.description);
     }
 

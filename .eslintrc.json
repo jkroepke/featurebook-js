@@ -1,23 +1,21 @@
 {
     "env": {
         "commonjs": true,
+        "browser": false,
         "es6": true,
         "node": true,
         "mocha": true
     },
     "extends": [
+        "eslint:recommended",
         "airbnb-base"
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
     "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 2019
     },
     "rules": {
         "no-console": "off",
-        "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
+        "no-restricted-syntax": ["error", "LabeledStatement", "WithStatement", "BinaryExpression[operator='in']"]
     },
     "overrides": [
         {

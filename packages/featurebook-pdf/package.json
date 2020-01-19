@@ -53,10 +53,9 @@
   "dependencies": {
     "@jkroepke/featurebook-api": "^2.0.0-beta.1",
     "colors": "^1.4.0",
-    "commonmark": "^0.29.1",
-    "pdfkit": "^0.11.0",
-    "pdfkit-commonmark": "^0.2.0",
-    "voilab-pdf-table": "^0.5.0"
+    "jsdom": "^16.0.1",
+    "markdown2pdfmake": "^1.1.0",
+    "pdfmake": "^0.1.63"
   },
   "devDependencies": {
     "chai": "^4.2.0",

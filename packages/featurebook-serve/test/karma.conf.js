@@ -1,5 +1,5 @@
 // eslint-disable-next-line func-names
-module.exports = function (config) {
+module.exports = (config) => {
   config.set({
     basePath: './../',
     frameworks: ['jasmine'],

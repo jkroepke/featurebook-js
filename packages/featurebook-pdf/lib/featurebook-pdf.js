@@ -9,17 +9,26 @@ const pdf = async (specDir, outputDir) => {
 
   fs.mkdirSync(outputDir, { recursive: true });
 
-  const doc = new FeaturebookPdfGenerator(specDir);
+  const fonts = {
+    Anaheim: {
+      normal: path.join(__dirname, '..', 'resources/fonts', 'Anaheim-Regular.ttf'),
+      bold: path.join(__dirname, '..', 'resources/fonts', 'Anaheim-Regular.ttf'),
+      italics: path.join(__dirname, '..', 'resources/fonts', 'Anaheim-Regular.ttf'),
+      bolditalics: path.join(__dirname, '..', 'resources/fonts', 'Anaheim-Regular.ttf'),
+    },
+  };
 
+  const doc = new FeaturebookPdfGenerator(specDir, fonts);
+  doc.setDocumentDefinition({});
   doc.setMetadata(metadata);
-  doc.setOutput(outputFile);
-  doc.setFont(path.join(__dirname, '..', 'resources/fonts', 'Anaheim-Regular.ttf'));
 
   const specTree = await api.readSpecTree(specDir);
 
+  doc.printIndex(specTree);
+
   await doc.printNode(specTree);
 
-  doc.end();
+  doc.generate(outputFile);
 };
 
 module.exports = pdf;
