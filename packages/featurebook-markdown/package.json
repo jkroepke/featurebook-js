@@ -1,6 +1,6 @@
 {
   "name": "@jkroepke/featurebook-markdown",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Markdown parser for FeatureBook",
   "main": "index.js",
   "files": [
