@@ -1,6 +1,6 @@
 {
   "name": "@jkroepke/featurebook",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "description": "A command line tool (and Node.js library) for generating beautiful system specifications from Gherkin source files.",
   "bin": {
     "featurebook": "./bin/featurebook.js"
