@@ -6,7 +6,8 @@
     "featurebook": "./bin/featurebook.js"
   },
   "files": [
-    "bin"
+    "/bin",
+    "/cmds"
   ],
   "preferGlobal": true,
   "scripts": {
