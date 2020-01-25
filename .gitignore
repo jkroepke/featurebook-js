@@ -1,6 +1,8 @@
 /.idea
 *.iml
 
+*.lerna_backup
+
 npm-debug.log
 node_modules/
 dist/
