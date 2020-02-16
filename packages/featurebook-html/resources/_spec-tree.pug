@@ -5,11 +5,11 @@ mixin printNode(obj)
   else if obj && obj.type === 'directory'
     li
       a.featurebook-spec-tree-directory(href= pathPrefix + obj.path + '/index.html', class= obj.path === path ? 'active' : null)= obj.displayName
-      ul
+      ul.nav-content
         each child in obj.children
           +printNode(child)
 
 aside.featurebook-spec-tree
-  ul
+  ul.nav-content
     each child in specTree.children
       +printNode(child)

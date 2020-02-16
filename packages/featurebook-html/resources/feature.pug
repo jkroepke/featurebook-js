@@ -12,62 +12,48 @@ mixin printStep(step)
     if step.docString
       pre.featurebook-doc-string= step.docString.content
 
-doctype html
-html
-  head(lang="en")
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    link(rel='icon', href=pathPrefix + 'assets/favicon.ico')
+include _layout.pug
+div.featurebook-container
+  include _metadata.pug
+  include _spec-tree.pug
 
-    title #{metadata.title} #{metadata.version}
-    style
-      include stylesheet.css
+  main.featurebook-main
+    each feature in features
+      if feature.feature.tags
+        each tag in feature.feature.tags
+          div.featurebook-tag= tag.name
 
-    link(rel='stylesheet', href=pathPrefix + 'assets/stylesheet.css')
-    script(src=pathPrefix + 'assets/scripts.js')
+      div.featurebook-feature-name #{feature.feature.keyword}: #{feature.feature.name}
 
-  body
-    div.featurebook-container
-      include _metadata.pug
-      include _spec-tree.pug
+      div.featurebook-feature-description.featurebook-markdown !{feature.feature.description}
 
-      main.featurebook-main
-        each feature in features
-          if feature.feature.tags
-            each tag in feature.feature.tags
-              div.featurebook-tag= tag.name
+      if feature.feature.children
+        each children in feature.feature.children
+          if children.background
+            div.featurebook-background
+              div.featurebook-background-name #{children.background.keyword}: #{children.background.name}
+              each step in children.background.steps
+                +printStep(step)
 
-          div.featurebook-feature-name #{feature.feature.keyword}: #{feature.feature.name}
+          if children.scenario || children.scenarioOutline
+            div.featurebook-scenario-definition
+              if children.scenario.tags
+                each tag in children.scenario.tags
+                  div.featurebook-tag= tag.name
+              div.featurebook-scenario-definition-name= children.scenario.keyword + ': ' + children.scenario.name
+              div !{children.scenario.description}
+              each step in children.scenario.steps
+                +printStep(step)
 
-          div.featurebook-feature-description.featurebook-markdown !{feature.feature.description}
-
-          if feature.feature.children
-            each children in feature.feature.children
-              if children.background
-                div.featurebook-background
-                  div.featurebook-background-name #{children.background.keyword}: #{children.background.name}
-                  each step in children.background.steps
-                    +printStep(step)
-
-              if children.scenario || children.scenarioOutline
-                div.featurebook-scenario-definition
-                  if children.scenario.tags
-                    each tag in children.scenario.tags
-                      div.featurebook-tag= tag.name
-                  div.featurebook-scenario-definition-name= children.scenario.keyword + ': ' + children.scenario.name
-                  div !{children.scenario.description}
-                  each step in children.scenario.steps
-                    +printStep(step)
-
-                  if children.scenario.examples
-                    each example in children.scenario.examples
-                      div.featurebook-examples
-                        div.featurebook-examples-name= example.keyword + ': ' + example.name
-                        table.featurebook-data-table
-                          tr
-                            each cell in example.tableHeader.cells
-                              th= cell.value
-                          each row in example.tableBody
-                            tr
-                              each cell in row.cells
-                                td= cell.value
+              if children.scenario.examples
+                each example in children.scenario.examples
+                  div.featurebook-examples
+                    div.featurebook-examples-name= example.keyword + ': ' + example.name
+                    table.featurebook-data-table
+                      tr
+                        each cell in example.tableHeader.cells
+                          th= cell.value
+                      each row in example.tableBody
+                        tr
+                          each cell in row.cells
+                            td= cell.value

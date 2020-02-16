@@ -1,20 +1,7 @@
-doctype html
-html
-  head
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    link(rel='icon', href=pathPrefix + 'assets/favicon.ico')
-    title #{metadata.title} #{metadata.version}
-    style
-      include stylesheet.css
+include _layout.pug
+div.featurebook-container
+  include _metadata.pug
+  include _spec-tree.pug
 
-    link(rel='stylesheet', href=pathPrefix + 'assets/stylesheet.css')
-    script(src=pathPrefix + 'assets/scripts.js')
-
-  body
-    div.featurebook-container
-      include _metadata.pug
-      include _spec-tree.pug
-
-      main.featurebook-main
-        div.featurebook-markdown !{summary}
+  main.featurebook-main
+    div.featurebook-markdown !{summary}
