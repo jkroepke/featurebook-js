@@ -1,6 +1,6 @@
 {
   "name": "@jkroepke/featurebook-html",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "FeatureBook's HTML converter",
   "main": "index.js",
   "files": [
@@ -52,7 +52,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@jkroepke/featurebook-api": "^2.0.0",
+    "@jkroepke/featurebook-api": "^2.0.1",
     "@jkroepke/featurebook-markdown": "^2.0.0",
     "colors": "^1.4.0",
     "fs-extra": "^8.1.0",
