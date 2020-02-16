@@ -4,6 +4,7 @@
   "description": "FeatureBook's HTML converter",
   "main": "index.js",
   "files": [
+    "resources",
     "lib",
     "index.js"
   ],
