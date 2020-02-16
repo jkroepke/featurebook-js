@@ -55,7 +55,7 @@
     "colors": "^1.4.0",
     "jsdom": "^16.0.1",
     "markdown2pdfmake": "^1.1.0",
-    "pdfmake": "^0.1.63"
+    "pdfmake": "^0.1.64"
   },
   "devDependencies": {
     "chai": "^4.2.0",
